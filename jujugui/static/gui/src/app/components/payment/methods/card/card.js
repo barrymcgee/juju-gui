@@ -81,7 +81,7 @@ class PaymentMethodCard extends React.Component {
       return null;
     }
     return (
-      <div className="four-col last-col payment-card-actions">
+      <div className="four-col last-col payment-card-actions no-margin-bottom">
         <GenericButton
           action={this._removePaymentMethod.bind(this)}
           type="inline-neutral">
@@ -104,8 +104,8 @@ class PaymentMethodCard extends React.Component {
     const address = card.address;
     const line2 = address.line2 ? (<p>{address.line2}</p>) : null;
     return (
-      <div className="payment-card twelve-col">
-        <div className="eight-col">
+      <div className="payment-card">
+        <div className="eight-col no-margin-bottom">
           <div className={cardClasses}
             onClick={this._handleCardClick.bind(this)}>
             <div className="payment-card-container">
