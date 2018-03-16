@@ -72,19 +72,19 @@ class Inspector extends React.Component {
           title: service.get('name'),
           icon: service.get('icon'),
           component: <ServiceOverview
-            acl={this.props.acl}
-            addNotification={this.props.addNotification}
+            acl={nextProps.acl}
+            addNotification={nextProps.addNotification}
             changeState={changeState}
-            charm={this.props.charm}
-            clearState={this.props.clearState}
-            destroyService={this.props.destroyService}
-            displayPlans={this.props.displayPlans}
-            getUnitStatusCounts={this.props.getUnitStatusCounts}
-            modelUUID={this.props.modelUUID}
+            charm={nextProps.charm}
+            clearState={nextProps.clearState}
+            destroyService={nextProps.destroyService}
+            displayPlans={nextProps.displayPlans}
+            getUnitStatusCounts={nextProps.getUnitStatusCounts}
+            modelUUID={nextProps.modelUUID}
             service={service}
-            serviceRelations={this.props.serviceRelations}
-            showActivePlan={this.props.showActivePlan}
-            showPlans={this.props.showPlans} />,
+            serviceRelations={nextProps.serviceRelations}
+            showActivePlan={nextProps.showActivePlan}
+            showPlans={nextProps.showPlans} />,
           backState: backState
         };
         state.showHeaderLinks = true;
@@ -102,13 +102,13 @@ class Inspector extends React.Component {
           headerType: unitStatus,
           component:
             <UnitList
-              acl={this.props.acl}
+              acl={nextProps.acl}
+              changeState={changeState}
+              destroyUnits={nextProps.destroyUnits}
+              envResolved={nextProps.envResolved}
               service={service}
-              unitStatus={unitStatus}
               units={units}
-              envResolved={this.props.envResolved}
-              destroyUnits={this.props.destroyUnits}
-              changeState={changeState} />,
+              unitStatus={unitStatus} />,
           backState: {
             gui: {
               inspector: {
@@ -150,13 +150,13 @@ class Inspector extends React.Component {
           headerType: unit.agent_state || 'uncommitted',
           component:
             <UnitDetails
-              acl={this.props.acl}
-              destroyUnits={this.props.destroyUnits}
-              service={service}
+              acl={nextProps.acl}
               changeState={changeState}
-              unitStatus={unitStatus}
+              destroyUnits={nextProps.destroyUnits}
               previousComponent={previousComponent}
-              unit={unit} />,
+              service={service}
+              unit={unit}
+              unitStatus={unitStatus} />,
           backState: {
             gui: {
               inspector: {
@@ -171,11 +171,11 @@ class Inspector extends React.Component {
           icon: service.get('icon'),
           component:
             <ScaleService
-              acl={this.props.acl}
-              addGhostAndEcsUnits={this.props.addGhostAndEcsUnits}
+              acl={nextProps.acl}
+              addGhostAndEcsUnits={nextProps.addGhostAndEcsUnits}
               changeState={changeState}
-              createMachinesPlaceUnits={this.props.createMachinesPlaceUnits}
-              providerType={this.props.providerType}
+              createMachinesPlaceUnits={nextProps.createMachinesPlaceUnits}
+              providerType={nextProps.providerType}
               serviceId={serviceId} />,
           backState: {
             gui: {
@@ -189,18 +189,18 @@ class Inspector extends React.Component {
           icon: service.get('icon'),
           component:
             <Configuration
-              acl={this.props.acl}
-              service={service}
-              charm={nextProps.charm}
+              acl={nextProps.acl}
+              addNotification={nextProps.addNotification}
               changeState={changeState}
-              getYAMLConfig={this.props.getYAMLConfig}
-              updateServiceUnitsDisplayname={this.props.updateServiceUnitsDisplayname}
-              getServiceByName={this.props.getServiceByName}
-              addNotification={this.props.addNotification}
-              linkify={this.props.linkify}
-              unplaceServiceUnits={this.props.unplaceServiceUnits}
-              serviceRelations={this.props.serviceRelations}
-              setConfig={nextProps.setConfig} />,
+              charm={nextProps.charm}
+              getServiceByName={nextProps.getServiceByName}
+              getYAMLConfig={nextProps.getYAMLConfig}
+              linkify={nextProps.linkify}
+              service={service}
+              serviceRelations={nextProps.serviceRelations}
+              setConfig={nextProps.setConfig}
+              unplaceServiceUnits={nextProps.unplaceServiceUnits}
+              updateServiceUnitsDisplayname={nextProps.updateServiceUnitsDisplayname} />,
           backState: {
             gui: {
               inspector: {
@@ -213,12 +213,12 @@ class Inspector extends React.Component {
           icon: service.get('icon'),
           component:
             <InspectorExpose
-              acl={this.props.acl}
+              acl={nextProps.acl}
+              addNotification={nextProps.addNotification}
               changeState={changeState}
-              exposeService={this.props.exposeService}
-              unexposeService={this.props.unexposeService}
-              addNotification={this.props.addNotification}
+              exposeService={nextProps.exposeService}
               service={service}
+              unexposeService={nextProps.unexposeService}
               units={service.get('units')} />,
           backState: {
             gui: {
@@ -232,11 +232,11 @@ class Inspector extends React.Component {
           icon: service.get('icon'),
           component:
             <InspectorRelations
-              acl={this.props.acl}
+              acl={nextProps.acl}
+              changeState={changeState}
+              destroyRelations={nextProps.destroyRelations}
               service={service}
-              destroyRelations={this.props.destroyRelations}
-              serviceRelations={this.props.serviceRelations}
-              changeState={changeState} />,
+              serviceRelations={nextProps.serviceRelations} />,
           backState: {
             gui: {
               inspector: {
@@ -245,7 +245,7 @@ class Inspector extends React.Component {
         break;
       case 'relation':
         var relationIndex = nextProps.appState.current.gui.inspector.relation;
-        var relation = this.props.serviceRelations[relationIndex];
+        var relation = nextProps.serviceRelations[relationIndex];
         var serviceName = relation.far.serviceName;
         var relationName = relation.far.name;
         state.activeChild = {
@@ -264,7 +264,7 @@ class Inspector extends React.Component {
         const spouse = nextProps.appState.current.gui.inspector['relate-to'];
         if (typeof serviceId === 'string' && typeof spouse === 'string') {
           state.activeChild = {
-            title: this.props.getServiceById(spouse).get('name'),
+            title: nextProps.getServiceById(spouse).get('name'),
             icon: service.get('icon'),
             component:
               <InspectorRelateToEndpoint
@@ -273,10 +273,10 @@ class Inspector extends React.Component {
                     inspector: {
                       id: serviceId,
                       activeComponent: 'relations'}}}}
-                createRelation={this.props.createRelation}
-                endpoints={this.props.getAvailableEndpoints(
-                  service, this.props.getServiceById(spouse))}
-                changeState={changeState} />,
+                changeState={changeState}
+                createRelation={nextProps.createRelation}
+                endpoints={nextProps.getAvailableEndpoints(
+                  service, nextProps.getServiceById(spouse))} />,
             backState: {
               gui: {
                 inspector: {
@@ -289,9 +289,9 @@ class Inspector extends React.Component {
           icon: service.get('icon'),
           component:
             <InspectorRelateTo
-              changeState={changeState}
               application={service}
-              relatableApplications={this.props.relatableApplications} />,
+              changeState={changeState}
+              relatableApplications={nextProps.relatableApplications} />,
           backState: {
             gui: {
               inspector: {
@@ -308,15 +308,15 @@ class Inspector extends React.Component {
           icon: service.get('icon'),
           component:
             <InspectorChangeVersion
-              acl={this.props.acl}
+              acl={nextProps.acl}
+              addCharm={nextProps.addCharm}
+              addNotification={nextProps.addNotification}
               changeState={changeState}
-              addNotification={this.props.addNotification}
               charmId={service.get('charm')}
+              getAvailableVersions={nextProps.getAvailableVersions}
+              getCharm={nextProps.getCharm}
               service={service}
-              addCharm={this.props.addCharm}
-              setCharm={this.props.setCharm}
-              getCharm={this.props.getCharm}
-              getAvailableVersions={this.props.getAvailableVersions} />,
+              setCharm={nextProps.setCharm} />,
           backState: {
             gui: {
               inspector: {
@@ -329,8 +329,8 @@ class Inspector extends React.Component {
           icon: service.get('icon'),
           component:
             <InspectorResourcesList
-              acl={this.props.acl}
-              resources={this.props.charm.get('resources')} />,
+              acl={nextProps.acl}
+              resources={nextProps.charm.get('resources')} />,
           backState: {
             gui: {
               inspector: {
@@ -343,8 +343,8 @@ class Inspector extends React.Component {
           icon: service.get('icon'),
           component:
             <InspectorPlan
-              acl={this.props.acl}
-              currentPlan={this.props.service.get('activePlan')} />,
+              acl={nextProps.acl}
+              currentPlan={nextProps.service.get('activePlan')} />,
           backState: {
             gui: {
               inspector: {
@@ -365,12 +365,12 @@ class Inspector extends React.Component {
         <InspectorHeader
           activeComponent={this.state.activeComponent}
           backCallback={this._backCallback.bind(this)}
-          charmId={this.props.charm.get('id')}
           changeState={this.props.appState.changeState.bind(this.props.appState)}
+          charmId={this.props.charm.get('id')}
           entityPath={this.props.entityPath}
           hasGetStarted={this.props.charm.hasGetStarted()}
-          showLinks={this.state.showHeaderLinks}
           icon={this.state.activeChild.icon}
+          showLinks={this.state.showHeaderLinks}
           title={this.state.activeChild.title}
           type={this.state.activeChild.headerType} />
         <div className="inspector-content">

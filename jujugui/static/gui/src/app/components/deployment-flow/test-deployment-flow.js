@@ -162,8 +162,8 @@ describe('DeploymentFlow', function() {
         changeState={props.changeState}
         isDirectDeploy={false}
         loggedIn={true}
-        title="Pavlova"
-        sendAnalytics={sinon.stub()}>
+        sendAnalytics={sinon.stub()}
+        title="Pavlova">
         <DeploymentSection
           completed={true}
           instance="deployment-model-name"
@@ -187,8 +187,8 @@ describe('DeploymentFlow', function() {
             addNotification={props.addNotification}
             cloud={null}
             controllerIsReady={props.controllerIsReady}
-            listClouds={props.listClouds}
             getCloudProviderDetails={props.getCloudProviderDetails}
+            listClouds={props.listClouds}
             setCloud={instance._setCloud} />
         </DeploymentSection>
         <DeploymentSection
@@ -198,13 +198,13 @@ describe('DeploymentFlow', function() {
           showCheck={true}
           title={<span>Add public SSH keys <em>(optional)</em></span>}>
           <DeploymentSSHKey
-            WebHandler={props.WebHandler}
             addNotification={props.addNotification}
             cloud={null}
             getGithubSSHKeys={props.getGithubSSHKeys}
-            setSSHKeys={instance._setSSHKeys}
             setLaunchpadUsernames={instance._setLaunchpadUsernames}
-            username={undefined} />
+            setSSHKeys={instance._setSSHKeys}
+            username={undefined}
+            WebHandler={props.WebHandler} />
         </DeploymentSection>
         {undefined}
         <DeploymentSection
@@ -307,9 +307,9 @@ describe('DeploymentFlow', function() {
         addNotification={addNotification}
         changeState={changeState}
         ddData={{id: 'cs:bundle/kubernetes-core-8'}}
+        entityModel={entityModel}
         generatePath={sinon.stub()}
         getDiagramURL={instance.props.getDiagramURL}
-        entityModel={entityModel}
         renderMarkdown={renderMarkdown} />
     );
   });
@@ -508,9 +508,9 @@ describe('DeploymentFlow', function() {
     const expected = (
       <div className="deployment-flow__deploy-option">
         <input className="deployment-flow__deploy-checkbox"
-          onChange={instance._handleTermsAgreement}
           disabled={false}
           id="terms"
+          onChange={instance._handleTermsAgreement}
           type="checkbox" />
         <label className="deployment-flow__deploy-label"
           htmlFor="terms">
@@ -589,6 +589,34 @@ describe('DeploymentFlow', function() {
     assert.deepEqual(props.sendAnalytics.args[1], [
       'Deployment Flow', 'Button click',
       'Deploy model - is DD - is model update - doesn\'t have USSO']);
+  });
+
+  it('Enables the deploy button if deploying fails', function() {
+    const charmsGetById = sinon.stub().withArgs('service1').returns({
+      get: sinon.stub().withArgs('terms').returns([])
+    });
+    const deploy = sinon.stub().callsArgWith(0, 'Uh oh!');
+    const renderer = createDeploymentFlow({
+      charmsGetById: charmsGetById,
+      cloud: {name: 'cloud'},
+      credential: 'cred',
+      deploy,
+      modelCommitted: true,
+      region: 'north'
+    });
+    const instance = renderer.getMountedInstance();
+    const props = instance.props;
+    let output = renderer.getRenderOutput();
+    // Click to deploy.
+    let deployButton = output.props.children[9].props.children.props.children[1]
+      .props.children;
+    deployButton.props.action();
+    assert.equal(deploy.callCount, 1);
+    assert.equal(props.changeState.callCount, 0);
+    output = renderer.getRenderOutput();
+    deployButton = output.props.children[9].props.children.props.children[1]
+      .props.children;
+    assert.equal(deployButton.props.disabled, false);
   });
 
   it('increases stats when deploying', function() {
@@ -822,7 +850,32 @@ describe('DeploymentFlow', function() {
       .children[1].props.children;
 
     assert.equal(deployButton.props.disabled, true);
-    assert.equal(deployButton.props.children, 'Deploying...');
+    assert.equal(deployButton.props.children, 'Committing...');
+  });
+
+  it('shows a commit button if the model is committed', function() {
+    const charmsGetById = sinon.stub().withArgs('service1').returns({
+      get: sinon.stub().withArgs('terms').returns([])
+    });
+    const renderer = createDeploymentFlow({
+      charmsGetById: charmsGetById,
+      cloud: {name: 'cloud'},
+      credential: 'cred',
+      deploy: sinon.stub(), // Don't trigger a re-render by calling callback.
+      modelCommitted: true,
+      region: 'north'
+    });
+    let output = renderer.getRenderOutput();
+    const deployButton = output.props.children[9].props.children.props
+      .children[1].props.children;
+    const expected = (
+      <GenericButton
+        action={sinon.stub()}
+        disabled={false}
+        type="positive">
+        Commit
+      </GenericButton>);
+    expect(deployButton).toEqualJSX(expected);
   });
 
   it('can deploy with SSH keys', function() {

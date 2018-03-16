@@ -163,11 +163,11 @@ describe('Profile Model List', function() {
         addNotification={sinon.stub()}
         baseURL="/gui/"
         changeState={options.changeState || sinon.stub()}
+        destroyModel={sinon.stub()}
         facadesExist={true}
         listModelsWithInfo={options.listModelsWithInfo || listModelsWithInfo}
-        destroyModels={sinon.stub()}
         switchModel={options.switchModel || sinon.stub()}
-        userInfo={{profile: 'tester'}} />, true);
+        userInfo={options.userInfo || {profile: 'tester'}} />, true);
   }
 
   it('can render', () => {
@@ -178,9 +178,9 @@ describe('Profile Model List', function() {
       <div className="profile-model-list">
         <div className="profile-model-list__header twelve-col">
           <CreateModelButton
-            title="Start a new model"
             changeState={instance.props.changeState}
-            switchModel={instance.props.switchModel} />
+            switchModel={instance.props.switchModel}
+            title="Start a new model" />
           <h2 className="profile__title">
             My models
             <span className="profile__title-count">
@@ -603,6 +603,50 @@ describe('Profile Model List', function() {
     expect(output).toEqualJSX(expected);
   });
 
+  it('does not break for superusers', () => {
+    // Users with access to all models but no models of their own, or shared with them.
+    const models = JSON.parse(rawModelData);
+    models.push(JSON.parse(`{
+      "id": "2f929db7-08a1-4a75-8733-3a0352a6e9f5",
+      "name": "mymodel-foo",
+      "series": "xenial",
+      "provider": "ec2",
+      "uuid": "2f929db7-08a1-4a75-8733-3a0352a6e9f5",
+      "agentVersion": "",
+      "sla": "",
+      "slaOwner": "",
+      "status": "available",
+      "statusInfo": "",
+      "controllerUUID": "a030379a-940f-4760-8fce-3062b41a04e9",
+      "owner": "'somesuperuser'@external",
+      "credential": "aws_tester@external_base",
+      "credentialName": "base",
+      "region": "eu-west-1",
+      "cloud": "aws",
+      "numMachines": 0,
+      "users": [{
+        "name": "somesuperuser@external",
+        "displayName": "somesuperuser",
+        "domain": "Ubuntu SSO",
+        "lastConnection": "2017-07-06T14:47:03.000Z",
+        "access": "admin"
+      }],
+      "life": "alive",
+      "isAlive": true,
+      "isController": false,
+      "lastConnection": "2017-07-06T14:47:03.000Z"
+    }`));
+    const renderer = renderComponent({
+      listModelsWithInfo: sinon.stub().callsArgWith(0, null, models),
+      userInfo: {profile: 'somesuperuser'}
+    });
+    const output = renderer.getRenderOutput();
+    // It should only show the single model that they explicitly own.
+    assert.equal(
+      output.props.children[0].props.children[1].props.children[1].props.children[1],
+      1);
+  });
+
   it('can render without any models', () => {
     const renderer = renderComponent({
       listModelsWithInfo: sinon.stub().callsArgWith(0, null, null)
@@ -613,9 +657,9 @@ describe('Profile Model List', function() {
       <div className="profile-model-list">
         <div className="profile-model-list__header twelve-col">
           <CreateModelButton
-            title="Start a new model"
             changeState={instance.props.changeState}
-            switchModel={instance.props.switchModel} />
+            switchModel={instance.props.switchModel}
+            title="Start a new model" />
           <h2 className="profile__title">
             My models
             <span className="profile__title-count">
@@ -639,9 +683,9 @@ describe('Profile Model List', function() {
       <div className="profile-model-list">
         <div className="profile-model-list__header twelve-col">
           <CreateModelButton
-            title="Start a new model"
             changeState={instance.props.changeState}
-            switchModel={instance.props.switchModel} />
+            switchModel={instance.props.switchModel}
+            title="Start a new model" />
           <h2 className="profile__title">
             My models
             <span className="profile__title-count">
@@ -650,6 +694,149 @@ describe('Profile Model List', function() {
           </h2>
         </div>
         {null}
+      </div>
+    );
+    expect(output).toEqualJSX(expected);
+  });
+
+  it('does not show the trash icon for controller models', () => {
+    const models = JSON.parse(rawModelData).slice(0, 1);
+    models[0].isController = true;
+    const renderer = renderComponent({
+      listModelsWithInfo: sinon.stub().callsArgWith(0, null, models)
+    });
+    const output = renderer.getRenderOutput();
+    const instance = renderer.getMountedInstance();
+    const expected = (
+      <div className="profile-model-list">
+        <div className="profile-model-list__header twelve-col">
+          <CreateModelButton
+            changeState={instance.props.changeState}
+            switchModel={instance.props.switchModel}
+            title="Start a new model" />
+          <h2 className="profile__title">
+            My models
+            <span className="profile__title-count">
+              ({1})
+            </span>
+          </h2>
+        </div>
+        <BasicTable
+          headerClasses={['profile__entity-table-header-row']}
+          headerColumnClasses={['profile__entity-table-header-column']}
+          headers={[{
+            content: 'Name',
+            columnSize: 3
+          }, {
+            content: 'Owner',
+            columnSize: 2
+          }, {
+            content: 'Machines, cloud/region',
+            columnSize: 3
+          }, {
+            content: '',
+            columnSize: 1
+          }, {
+            content: 'Last accessed',
+            columnSize: 2
+          }, {
+            content: '',
+            columnSize: 1
+          }]}
+          rowClasses={['profile__entity-table-row']}
+          rowColumnClasses={['profile__entity-table-column']}
+          rows={[{
+            columns: [{
+              content: (
+                <a href="/gui/u/tester/mymodel"
+                  onClick={sinon.stub()}>
+                  mymodel
+                </a>),
+              columnSize: 3
+            }, {
+              content: 'Me',
+              columnSize: 2
+            }, {
+              content: (
+                <div>
+                  <span className="profile-model-list__machine-number">
+                    {0}
+                  </span>
+                  aws/eu-west-1
+                </div>),
+              columnSize: 3
+            }, {
+              content: (
+                <div className="profile-model-list__access tooltip">
+                  <span className="tooltip__tooltip">
+                    <span className="tooltip__inner tooltip__inner--down">
+                      admin
+                    </span>
+                  </span>
+                  <SvgIcon
+                    name="user_16"
+                    size="16" />
+                </div>),
+              columnSize: 1
+            }, {
+              content: (
+                <DateDisplay
+                  date='2017-07-06T14:47:03.000Z'
+                  relative={true} />),
+              columnSize: 2
+            }, {
+              content: null,
+              columnSize: 1,
+              classes: ['u-text-align--right']
+            }],
+            expandedContent: (
+              <div className="profile-model-list__expanded-content">
+                <div className="three-col">
+                  <a href="/gui/u/tester/mymodel"
+                    onClick={sinon.stub()}>
+                      mymodel
+                  </a>
+                </div>
+                <div className="two-col">
+                  Me
+                </div>
+                <div className="three-col">
+                  <div>
+                    <span className="profile-model-list__machine-number">
+                      0
+                    </span>
+                    aws/eu-west-1
+                  </div>
+                </div>
+                <div className="one-col">
+                  <div className="profile-model-list__access tooltip">
+                    <span className="tooltip__tooltip">
+                      <span className="tooltip__inner tooltip__inner--down">
+                        admin
+                      </span>
+                    </span>
+                    <SvgIcon
+                      name="user_16"
+                      size="16" />
+                  </div>
+                </div>
+                <div className="two-col">
+                  <DateDisplay
+                    date="2017-07-06T14:47:03.000Z"
+                    relative={true} />
+                </div>
+                <div className="one-col last-col u-text-align--right"></div>
+                <div className="three-col prepend-five profile-model-list__credential-name">
+                  <span className="link"
+                    onClick={sinon.stub()}
+                    role="button"
+                    tabIndex="0">
+                    base
+                  </span>
+                </div>
+              </div>),
+            key: 'mymodel'
+          }]} />
       </div>
     );
     expect(output).toEqualJSX(expected);
@@ -702,9 +889,9 @@ describe('Profile Model List', function() {
       <div className="profile-model-list">
         <div className="profile-model-list__header twelve-col">
           <CreateModelButton
-            title="Start a new model"
             changeState={instance.props.changeState}
-            switchModel={instance.props.switchModel} />
+            switchModel={instance.props.switchModel}
+            title="Start a new model" />
           <h2 className="profile__title">
             My models
             <span className="profile__title-count">

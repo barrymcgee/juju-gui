@@ -2,17 +2,48 @@
 'use strict';
 
 const React = require('react');
+const enzyme = require('enzyme');
 
 const Charmbrowser = require('./charmbrowser');
 const EntityDetails = require('../entity-details/entity-details');
-const Panel = require('../panel/panel');
 const SearchResults = require('../search-results/search-results');
 const Store = require('../store/store');
 
-const jsTestUtils = require('../../utils/component-test-utils');
-
 describe('Charmbrowser', function() {
   var acl, appState;
+
+  const renderComponent = (options = {}) => enzyme.shallow(
+    <Charmbrowser
+      acl={options.acl || acl}
+      addNotification={options.addNotification || sinon.stub()}
+      addToModel={options.addToModel || sinon.stub()}
+      apiUrl={options.apiUrl || 'http://example.com/'}
+      apiVersion={options.apiUrl || 'v5'}
+      appState={options.appState || {}}
+      charmstoreSearch={options.charmstoreSearch || sinon.stub()}
+      charmstoreURL={options.apiUrl || 'http://1.2.3.4/'}
+      clearLightbox={options.clearLightbox}
+      deployService={options.deployService || sinon.stub()}
+      displayLightbox={options.displayLightbox}
+      flags={options.flags}
+      getBundleYAML={options.getBundleYAML || sinon.stub()}
+      getDiagramURL={options.getDiagramURL || sinon.stub()}
+      getEntity={options.getEntity || sinon.stub()}
+      getFile={options.getFile || sinon.stub()}
+      getModelName={options.getModelName || sinon.stub()}
+      gisf={options.gisf === undefined ? true : options.gisf}
+      importBundleYAML={options.importBundleYAML || sinon.stub()}
+      listPlansForCharm={options.listPlansForCharm || sinon.stub()}
+      makeEntityModel={options.makeEntityModel || sinon.stub()}
+      renderMarkdown={options.renderMarkdown || sinon.stub()}
+      sendAnalytics={options.sendAnalytics || sinon.stub()}
+      series={options.series || {}}
+      setPageTitle={options.setPageTitle || sinon.stub()}
+      showTerms={options.showTerms || sinon.stub()}
+      staticURL={options.staticURL}
+      urllib={options.urllib || sinon.stub()}
+      utils={options.utils || {}} />
+  );
 
   beforeEach(function() {
     acl = {isReadOnly: sinon.stub().returns(false)};
@@ -36,65 +67,43 @@ describe('Charmbrowser', function() {
     const setPageTitle = sinon.stub();
     const makeEntityModel = sinon.spy();
     const utils = {getName: sinon.stub()};
-    const renderer = jsTestUtils.shallowRender(
-      <Charmbrowser
-        acl={acl}
-        addNotification={addNotification}
-        apiUrl="http://example.com/"
-        apiVersion="v5"
-        appState={appState}
-        charmstoreSearch={charmstoreSearch}
-        charmstoreURL="http://1.2.3.4/"
-        deployService={deployService}
-        addToModel={addToModel}
-        flags={{}}
-        getBundleYAML={getBundleYAML}
-        getDiagramURL={sinon.stub()}
-        getEntity={sinon.stub()}
-        getFile={sinon.stub()}
-        getModelName={sinon.stub()}
-        gisf={true}
-        importBundleYAML={importBundleYAML}
-        listPlansForCharm={sinon.stub()}
-        makeEntityModel={makeEntityModel}
-        renderMarkdown={sinon.stub()}
-        series={series}
-        setPageTitle={setPageTitle}
-        showTerms={sinon.stub()}
-        urllib={sinon.stub()}
-        utils={utils} />, true);
-    const instance = renderer.getMountedInstance();
-    const output = renderer.getRenderOutput();
-    const searchResults = output.props.children.props.children.props;
+    const wrapper = renderComponent({
+      addNotification,
+      addToModel,
+      appState,
+      charmstoreSearch,
+      deployService,
+      getBundleYAML,
+      importBundleYAML,
+      makeEntityModel,
+      series,
+      setPageTitle,
+      utils
+    });
+    const searchResults = wrapper.find('SearchResults');
     const expected = (
-      <Panel
-        instanceName="white-box"
-        clickAction={instance._close}
-        focus={false}
-        visible={true}>
-        <div className="charmbrowser"
-          ref="charmbrowser">
-          <SearchResults
-            acl={acl}
-            changeState={searchResults.changeState}
-            charmstoreSearch={charmstoreSearch}
-            addToModel={addToModel}
-            generatePath={searchResults.generatePath}
-            getName={utils.getName}
-            makeEntityModel={makeEntityModel}
-            owner={undefined}
-            provides={undefined}
-            query={query}
-            requires={undefined}
-            series={undefined}
-            seriesList={series}
-            setPageTitle={setPageTitle}
-            sort={undefined}
-            tags={undefined}
-            type={undefined} />
-        </div>
-      </Panel>);
-    expect(output).toEqualJSX(expected);
+      <div className="charmbrowser"
+        ref="charmbrowser">
+        <SearchResults
+          acl={acl}
+          addToModel={addToModel}
+          changeState={searchResults.prop('changeState')}
+          charmstoreSearch={charmstoreSearch}
+          generatePath={searchResults.prop('generatePath')}
+          getName={utils.getName}
+          makeEntityModel={makeEntityModel}
+          owner={undefined}
+          provides={undefined}
+          query={query}
+          requires={undefined}
+          series={undefined}
+          seriesList={series}
+          setPageTitle={setPageTitle}
+          sort={undefined}
+          tags={undefined}
+          type={undefined} />
+      </div>);
+    assert.compareJSX(wrapper.find('.charmbrowser'), expected);
   });
 
   it('displays the store when the app state calls for it', function() {
@@ -103,55 +112,27 @@ describe('Charmbrowser', function() {
     const utils = {getName: sinon.stub()};
     const makeEntityModel = sinon.spy();
     const seriesList = {};
-    const renderer = jsTestUtils.shallowRender(
-      <Charmbrowser
-        acl={acl}
-        addNotification={sinon.stub()}
-        apiUrl="http://example.com/"
-        apiVersion="v5"
-        appState={appState}
-        charmstoreSearch={charmstoreSearch}
-        charmstoreURL="http://1.2.3.4/"
-        flags={{}}
-        deployService={sinon.stub()}
-        addToModel={sinon.stub()}
-        getBundleYAML={sinon.stub()}
-        getDiagramURL={sinon.stub()}
-        getEntity={sinon.stub()}
-        getFile={sinon.stub()}
-        getModelName={sinon.stub()}
-        gisf={true}
-        importBundleYAML={sinon.stub()}
-        listPlansForCharm={sinon.stub()}
-        makeEntityModel={makeEntityModel}
-        renderMarkdown={sinon.stub()}
-        series={seriesList}
-        setPageTitle={setPageTitle}
-        showTerms={sinon.stub()}
-        staticURL='surl'
-        urllib={sinon.stub()}
-        utils={utils} />, true);
-    const instance = renderer.getMountedInstance();
-    const output = renderer.getRenderOutput();
+    const wrapper = renderComponent({
+      appState,
+      charmstoreSearch,
+      makeEntityModel,
+      seriesList,
+      setPageTitle,
+      staticURL: 'surl',
+      utils
+    });
     const expected = (
-      <Panel
-        instanceName="white-box"
-        clickAction={instance._close}
-        focus={false}
-        visible={true}>
-        <div className="charmbrowser"
-          ref="charmbrowser">
-          <Store
-            staticURL='surl'
-            apiVersion="v5"
-            charmstoreURL="http://1.2.3.4/"
-            changeState={
-              output.props.children.props.children.props.changeState}
-            gisf={true}
-            setPageTitle={setPageTitle} />
-        </div>
-      </Panel>);
-    expect(output).toEqualJSX(expected);
+      <div className="charmbrowser"
+        ref="charmbrowser">
+        <Store
+          apiVersion="v5"
+          changeState={wrapper.find('Store').prop('changeState')}
+          charmstoreURL="http://1.2.3.4/"
+          gisf={true}
+          setPageTitle={setPageTitle}
+          staticURL='surl' />
+      </div>);
+    assert.compareJSX(wrapper.find('.charmbrowser'), expected);
   });
 
   it('displays entity details when the app state calls for it', function() {
@@ -178,112 +159,71 @@ describe('Charmbrowser', function() {
     };
     const setPageTitle = sinon.spy();
     const urllib = sinon.stub();
-    const renderer = jsTestUtils.shallowRender(
-      <Charmbrowser
-        acl={acl}
-        addNotification={addNotification}
-        apiUrl={apiUrl}
-        apiVersion="v5"
-        appState={appState}
-        charmstoreSearch={sinon.stub()}
-        charmstoreURL="http://1.2.3.4/"
-        clearLightbox={clearLightbox}
-        deployService={deployService}
-        addToModel={sinon.stub()}
-        displayLightbox={displayLightbox}
-        flags={{'test.ddeploy': true}}
-        getBundleYAML={getBundleYAML}
-        getDiagramURL={getDiagramURL}
-        getEntity={getEntity}
-        getFile={getFile}
-        getModelName={getModelName}
-        gisf={true}
-        importBundleYAML={importBundleYAML}
-        listPlansForCharm={listPlansForCharm}
-        makeEntityModel={makeEntityModel}
-        utils={utils}
-        renderMarkdown={renderMarkdown}
-        series={{}}
-        setPageTitle={setPageTitle}
-        showTerms={showTerms}
-        staticURL="http://example.com"
-        urllib={urllib} />, true);
-    const instance = renderer.getMountedInstance();
-    const output = renderer.getRenderOutput();
-    const expectedOutput = (
-      <Panel
-        instanceName="white-box"
-        clickAction={instance._close}
-        focus={false}
-        visible={true}>
-        <div className="charmbrowser"
-          ref="charmbrowser">
-          <EntityDetails
-            acl={acl}
-            apiUrl={apiUrl}
-            importBundleYAML={importBundleYAML}
-            getBundleYAML={getBundleYAML}
-            changeState={
-              output.props.children.props.children.props.changeState}
-            clearLightbox={clearLightbox}
-            displayLightbox={displayLightbox}
-            flags={{'test.ddeploy': true}}
-            getEntity={getEntity}
-            getModelName={getModelName}
-            hash="readme"
-            scrollPosition={0}
-            listPlansForCharm={listPlansForCharm}
-            makeEntityModel={makeEntityModel}
-            getDiagramURL={getDiagramURL}
-            getFile={getFile}
-            renderMarkdown={renderMarkdown}
-            deployService={deployService}
-            id={id}
-            addNotification={addNotification}
-            pluralize={utils.pluralize}
-            scrollCharmbrowser={instance._scrollCharmbrowser}
-            setPageTitle={setPageTitle}
-            showTerms={showTerms}
-            urllib={urllib} />
-        </div>
-      </Panel>);
-    expect(output).toEqualJSX(expectedOutput);
+    const wrapper = renderComponent({
+      addNotification,
+      apiUrl,
+      appState,
+      clearLightbox,
+      deployService,
+      displayLightbox,
+      flags: {'test.ddeploy': true},
+      getBundleYAML,
+      getDiagramURL,
+      getEntity,
+      getFile,
+      getModelName,
+      importBundleYAML,
+      listPlansForCharm,
+      makeEntityModel,
+      renderMarkdown,
+      setPageTitle,
+      showTerms,
+      staticURL: 'http://example.com',
+      urllib,
+      utils
+    });
+    const entityDetails = wrapper.find('EntityDetails');
+    const expected = (
+      <div className="charmbrowser"
+        ref="charmbrowser">
+        <EntityDetails
+          acl={acl}
+          addNotification={addNotification}
+          apiUrl={apiUrl}
+          changeState={entityDetails.prop('changeState')}
+          clearLightbox={clearLightbox}
+          deployService={deployService}
+          displayLightbox={displayLightbox}
+          flags={{'test.ddeploy': true}}
+          getBundleYAML={getBundleYAML}
+          getDiagramURL={getDiagramURL}
+          getEntity={getEntity}
+          getFile={getFile}
+          getModelName={getModelName}
+          hash="readme"
+          id={id}
+          importBundleYAML={importBundleYAML}
+          listPlansForCharm={listPlansForCharm}
+          makeEntityModel={makeEntityModel}
+          pluralize={utils.pluralize}
+          renderMarkdown={renderMarkdown}
+          scrollCharmbrowser={entityDetails.prop('scrollCharmbrowser')}
+          scrollPosition={0}
+          sendAnalytics={sinon.stub()}
+          setPageTitle={setPageTitle}
+          showTerms={showTerms}
+          staticURL="http://example.com"
+          urllib={urllib} />
+      </div>);
+    assert.compareJSX(wrapper.find('.charmbrowser'), expected);
   });
 
   it('closes when clicked outside', function() {
     appState.current.user = 'spinch/koala';
-    const utils = {
-      pluralize: sinon.stub()
-    };
-    const renderer = jsTestUtils.shallowRender(
-      <Charmbrowser
-        acl={acl}
-        addNotification={sinon.stub()}
-        apiUrl="http://example.com"
-        apiVersion="v5"
-        appState={appState}
-        charmstoreSearch={sinon.stub()}
-        charmstoreURL="http://1.2.3.4/"
-        deployService={sinon.stub()}
-        addToModel={sinon.stub()}
-        flags={{}}
-        getBundleYAML={sinon.stub()}
-        getDiagramURL={sinon.stub()}
-        getEntity={sinon.stub()}
-        getFile={sinon.stub()}
-        getModelName={sinon.stub()}
-        gisf={true}
-        importBundleYAML={sinon.stub()}
-        listPlansForCharm={sinon.stub()}
-        makeEntityModel={sinon.stub()}
-        renderMarkdown={sinon.stub()}
-        series={{}}
-        setPageTitle={sinon.stub()}
-        showTerms={sinon.stub()}
-        urllib={sinon.stub()}
-        utils={utils} />, true);
-    const output = renderer.getRenderOutput();
-    output.props.clickAction();
+    const wrapper = renderComponent({
+      appState
+    });
+    wrapper.props().clickAction();
     assert.equal(appState.changeState.callCount, 1);
     assert.deepEqual(appState.changeState.args[0][0], {
       hash: null,

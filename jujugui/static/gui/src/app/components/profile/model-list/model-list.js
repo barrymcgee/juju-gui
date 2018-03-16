@@ -87,9 +87,9 @@ class ProfileModelList extends React.Component {
       title: 'Destroy',
       action: () => {
         this.setState({notification: null});
-        this.props.destroyModels([model.uuid], () => {
+        this.props.destroyModel(model.uuid, () => {
           this._fetchModels(this.props.facadesExist);
-        });
+        }, false);
       },
       type: 'destructive'
     }];
@@ -153,10 +153,17 @@ class ProfileModelList extends React.Component {
       if (!model.isAlive) {
         return modelList;
       }
+      // It is possible that the user is a superuser with no models but has
+      // access to all of the models. In which case the user objects for the
+      // model will not list their user name and the profileUser will be
+      // undefined.
+      const profileUser = model.users.find(user => user.displayName === profileUsername);
+      if (profileUser === undefined) {
+        return modelList;
+      }
       const bdRef = `mymodel-button-dropdown-${index}`;
       const owner = model.owner.replace('@external', '') || profileUsername;
       const path = `${this.props.baseURL}u/${owner}/${model.name}`;
-      const profileUser = model.users.find(user => user.displayName === profileUsername);
       const userIsAdmin = profileUser.access === 'admin';
       const username = owner === profileUsername ? 'Me' : owner;
       const region = model.region ? '/' + model.region : '';
@@ -191,7 +198,7 @@ class ProfileModelList extends React.Component {
         <DateDisplay
           date={model.lastConnection || '--'}
           relative={true} />);
-      const destroyContent = userIsAdmin ? (
+      const destroyContent = userIsAdmin && !model.isController ? (
         <a onClick={this._destroyModel.bind(this, model, bdRef)}>
           <SvgIcon
             name="delete_16"
@@ -300,9 +307,9 @@ class ProfileModelList extends React.Component {
       <div className="profile-model-list">
         <div className="profile-model-list__header twelve-col">
           <CreateModelButton
-            title="Start a new model"
             changeState={this.props.changeState}
-            switchModel={this.props.switchModel} />
+            switchModel={this.props.switchModel}
+            title="Start a new model" />
           <h2 className="profile__title">
             My models
             <span className="profile__title-count">
@@ -346,7 +353,7 @@ ProfileModelList.propTypes = {
   addNotification: PropTypes.func.isRequired,
   baseURL: PropTypes.string.isRequired,
   changeState: PropTypes.func.isRequired,
-  destroyModels: PropTypes.func.isRequired,
+  destroyModel: PropTypes.func.isRequired,
   facadesExist: PropTypes.bool.isRequired,
   listModelsWithInfo: PropTypes.func.isRequired,
   models: PropTypes.array,

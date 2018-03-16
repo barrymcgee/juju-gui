@@ -56,6 +56,7 @@ describe('Profile Charm List', function() {
       <ProfileCharmList
         acl={options.acl || acl}
         addNotification={sinon.stub()}
+        addToModel={options.addToModel || sinon.stub()}
         bakery={{}}
         baseURL="/gui/"
         changeState={options.changeState || sinon.stub()}
@@ -64,7 +65,7 @@ describe('Profile Charm List', function() {
           list: options.charmstoreList || charmstoreList,
           url: '/charmstore'
         }}
-        addToModel={options.addToModel || sinon.stub()}
+        generatePath={options.generatePath || sinon.stub()}
         getModelName={options.getModelName || sinon.stub()}
         isActiveUsersProfile={isActiveUsersProfile}
         storeUser={options.storeUser || sinon.stub()}
@@ -134,9 +135,10 @@ describe('Profile Charm List', function() {
               expandedContent: (
                 <ProfileExpandedContent
                   acl={instance.props.acl}
-                  changeState={sinon.stub()}
                   addToModel={instance.props.addToModel}
+                  changeState={sinon.stub()}
                   entity={charms[0]}
+                  generatePath={sinon.stub()}
                   getModelName={instance.props.getModelName}
                   topRow={(
                     <div>
@@ -156,6 +158,7 @@ describe('Profile Charm List', function() {
                         #7
                       </div>
                     </div>)} />),
+              extraData: 'failtester',
               key: 'cs:~hatch/precise/failtester-7'
             }, {
               columns: [{
@@ -200,9 +203,10 @@ describe('Profile Charm List', function() {
               expandedContent: (
                 <ProfileExpandedContent
                   acl={instance.props.acl}
-                  changeState={sinon.stub()}
                   addToModel={instance.props.addToModel}
+                  changeState={sinon.stub()}
                   entity={charms[1]}
+                  generatePath={sinon.stub()}
                   getModelName={instance.props.getModelName}
                   topRow={(
                     <div>
@@ -222,6 +226,7 @@ describe('Profile Charm List', function() {
                         #3
                       </div>
                     </div>)} />),
+              extraData: 'ghost',
               key: 'cs:~hatch/xenial/ghost-3'
             }, {
               columns: [{
@@ -252,9 +257,10 @@ describe('Profile Charm List', function() {
               expandedContent: (
                 <ProfileExpandedContent
                   acl={instance.props.acl}
-                  changeState={sinon.stub()}
                   addToModel={instance.props.addToModel}
+                  changeState={sinon.stub()}
                   entity={charms[2]}
+                  generatePath={sinon.stub()}
                   getModelName={instance.props.getModelName}
                   topRow={(
                     <div>
@@ -274,8 +280,10 @@ describe('Profile Charm List', function() {
                         #1
                       </div>
                     </div>)} />),
+              extraData: 'privghost',
               key: 'cs:~hatch/privghost-1'
-            }]} />
+            }]}
+            sort={sinon.stub()} />
         </div>
       </div>);
     expect(output).toEqualJSX(expected);

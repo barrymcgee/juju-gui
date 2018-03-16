@@ -13,6 +13,7 @@ const EntityContentReadme = require('./readme/readme');
 const EntityContentRelations = require('./relations/relations');
 const EntityFiles = require('./files/files');
 const EntityResources = require('./resources/resources');
+const ExpertContactCard = require('../../expert-contact-card/expert-contact-card');
 const Spinner = require('../../spinner/spinner');
 const TermsPopup = require('../../terms-popup/terms-popup');
 
@@ -63,11 +64,12 @@ describe('EntityContent', function() {
         entityModel={mockEntity}
         getDiagramURL={sinon.stub()}
         getFile={getFile}
-        hasPlans={false}
         hash="readme"
+        hasPlans={false}
         pluralize={pluralize}
         renderMarkdown={renderMarkdown}
         scrollCharmbrowser={scrollCharmbrowser}
+        sendAnalytics={sinon.stub()}
         showTerms={sinon.stub()}
         staticURL="http://example.com" />, true);
     const instance = renderer.getMountedInstance();
@@ -125,14 +127,15 @@ describe('EntityContent', function() {
               </div>
             </div>
             <div className="four-col last-col">
+              {null}
               <div className="section">
                 <h3 className="section__title">
                   Contribute
                 </h3>
                 <ul className="section__list">
                   <li className="section__list-item">
-                    <a href="https://bugs.launchpad.net/charms/+source/django"
-                      className="link"
+                    <a className="link"
+                      href="https://bugs.launchpad.net/charms/+source/django"
                       target="_blank">
                       Submit a bug
                     </a>
@@ -157,7 +160,7 @@ describe('EntityContent', function() {
                   Embed this charm
                 </h3>
                 <p>
-                  Add this card to your website by copying the code below.
+                  Add this card to your website by copying the code below.&nbsp;
                   <a className="entity-content__card-cta"
                     href="https://jujucharms.com/community/cards"
                     target="_blank">
@@ -192,10 +195,11 @@ describe('EntityContent', function() {
         pluralize={sinon.stub()}
         renderMarkdown={sinon.stub()}
         scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
         showTerms={sinon.stub()}
         staticURL="http://example.com" />);
     const innerWrapper = output.props.children[0].props.children;
-    const cardWrapper = innerWrapper.props.children[1].props.children[4];
+    const cardWrapper = innerWrapper.props.children[1].props.children[5];
     const script = cardWrapper.props.children[2];
     const card = cardWrapper.props.children[4];
     const expected = (
@@ -232,6 +236,7 @@ describe('EntityContent', function() {
         pluralize={sinon.stub()}
         renderMarkdown={sinon.stub()}
         scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
         showTerms={showTerms}
         staticURL="http://example.com" />, true);
     const output = renderer.getRenderOutput();
@@ -279,6 +284,7 @@ describe('EntityContent', function() {
         pluralize={sinon.stub()}
         renderMarkdown={sinon.stub()}
         scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
         showTerms={showTerms}
         staticURL="http://example.com" />, true);
     const instance = renderer.getMountedInstance();
@@ -314,6 +320,7 @@ describe('EntityContent', function() {
         pluralize={sinon.stub()}
         renderMarkdown={sinon.stub()}
         scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
         showTerms={showTerms}
         staticURL="http://example.com" />, true);
     const output = renderer.getRenderOutput();
@@ -344,6 +351,7 @@ describe('EntityContent', function() {
         pluralize={sinon.stub()}
         renderMarkdown={sinon.stub()}
         scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
         showTerms={showTerms}
         staticURL="http://example.com" />, true);
     renderer.getRenderOutput();
@@ -371,6 +379,7 @@ describe('EntityContent', function() {
         pluralize={sinon.stub()}
         renderMarkdown={sinon.stub()}
         scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
         showTerms={showTerms}
         staticURL="http://example.com" />, true);
     renderer.unmount();
@@ -392,6 +401,7 @@ describe('EntityContent', function() {
         pluralize={sinon.stub()}
         renderMarkdown={sinon.stub()}
         scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
         showTerms={sinon.stub()}
         staticURL="http://example.com" />, true);
     const output = renderer.getRenderOutput();
@@ -402,15 +412,15 @@ describe('EntityContent', function() {
         </h3>
         <ul className="section__list">
           <li className="section__list-item">
-            <a href="http://example.com/bugs"
-              className="link"
+            <a className="link"
+              href="http://example.com/bugs"
               target="_blank">
               Submit a bug
             </a>
           </li>
           <li className="section__list-item">
-            <a href="http://example.com/"
-              className="link"
+            <a className="link"
+              href="http://example.com/"
               target="_blank">
               Project homepage
             </a>
@@ -418,7 +428,7 @@ describe('EntityContent', function() {
         </ul>
       </div>);
     const innerWrapper = output.props.children[0].props.children;
-    const contribute = innerWrapper.props.children[1].props.children[0];
+    const contribute = innerWrapper.props.children[1].props.children[1];
     expect(contribute).toEqualJSX(expected);
   });
 
@@ -445,11 +455,12 @@ describe('EntityContent', function() {
         entityModel={mockEntity}
         getDiagramURL={sinon.stub()}
         getFile={getFile}
-        hasPlans={false}
         hash="readme"
+        hasPlans={false}
         pluralize={pluralize}
         renderMarkdown={renderMarkdown}
         scrollCharmbrowser={scrollCharmbrowser}
+        sendAnalytics={sinon.stub()}
         showTerms={sinon.stub()}
         staticURL="http://example.com" />, true);
     const instance = renderer.getMountedInstance();
@@ -484,14 +495,15 @@ describe('EntityContent', function() {
                 scrollCharmbrowser={scrollCharmbrowser} />
             </div>
             <div className="four-col last-col">
+              {null}
               <div className="section">
                 <h3 className="section__title">
                   Contribute
                 </h3>
                 <ul className="section__list">
                   <li className="section__list-item">
-                    <a href="https://bugs.launchpad.net/charms/+source/django"
-                      className="link"
+                    <a className="link"
+                      href="https://bugs.launchpad.net/charms/+source/django"
                       target="_blank">
                       Submit a bug
                     </a>
@@ -516,7 +528,7 @@ describe('EntityContent', function() {
                   Embed this charm
                 </h3>
                 <p>
-                  Add this card to your website by copying the code below.
+                  Add this card to your website by copying the code below.&nbsp;
                   <a className="entity-content__card-cta"
                     href="https://jujucharms.com/community/cards"
                     target="_blank">
@@ -561,12 +573,14 @@ describe('EntityContent', function() {
         entityModel={mockEntity}
         getDiagramURL={getDiagramURL}
         getFile={getFile}
-        hasPlans={false}
         hash="readme"
+        hasPlans={false}
         pluralize={pluralize}
         renderMarkdown={renderMarkdown}
         scrollCharmbrowser={scrollCharmbrowser}
-        showTerms={sinon.stub()} />);
+        sendAnalytics={sinon.stub()}
+        showTerms={sinon.stub()}
+        staticURL="http://example.com" />);
     const expected = (
       <div className="entity-content">
         <div className="row">
@@ -591,8 +605,8 @@ describe('EntityContent', function() {
                 hash="readme"
                 renderMarkdown={renderMarkdown}
                 scrollCharmbrowser={scrollCharmbrowser} />
-              <div id="configuration"
-                className="entity-content__configuration">
+              <div className="entity-content__configuration"
+                id="configuration">
                 <h3 className="entity-content__header">
                   Bundle configuration
                 </h3>
@@ -634,6 +648,10 @@ describe('EntityContent', function() {
               </div>
             </div>
             <div className="four-col last-col">
+              <ExpertContactCard
+                expert="test-owner"
+                sendAnalytics={sinon.stub()}
+                staticURL="http://example.com" />
               <div className="section">
                 <h3 className="section__title">
                   Contribute
@@ -641,10 +659,10 @@ describe('EntityContent', function() {
                 <ul className="section__list">
                   {undefined}
                   <li className="section__list-item">
-                    <a href={'https://code.launchpad.net/~charmers/charms/' +
+                    <a className="link"
+                      href={'https://code.launchpad.net/~charmers/charms/' +
                       'bundles/django-cluster/bundle'}
-                    className="link"
-                    target="_blank">
+                      target="_blank">
                       Project homepage
                     </a>
                   </li>
@@ -661,7 +679,7 @@ describe('EntityContent', function() {
                   Embed this charm
                 </h3>
                 <p>
-                  Add this card to your website by copying the code below.
+                  Add this card to your website by copying the code below.&nbsp;
                   <a className="entity-content__card-cta"
                     href="https://jujucharms.com/community/cards"
                     target="_blank">
@@ -698,6 +716,7 @@ describe('EntityContent', function() {
         pluralize={sinon.stub()}
         renderMarkdown={sinon.stub()}
         scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
         showTerms={sinon.stub()}
         staticURL="http://example.com" />, true);
     const output = renderer.getRenderOutput();
@@ -708,15 +727,15 @@ describe('EntityContent', function() {
         </h3>
         <ul className="section__list">
           <li className="section__list-item">
-            <a href="http://example.com/bugs"
-              className="link"
+            <a className="link"
+              href="http://example.com/bugs"
               target="_blank">
               Submit a bug
             </a>
           </li>
           <li className="section__list-item">
-            <a href="http://example.com/"
-              className="link"
+            <a className="link"
+              href="http://example.com/"
               target="_blank">
               Project homepage
             </a>
@@ -725,7 +744,7 @@ describe('EntityContent', function() {
       </div>);
     const innerWrapper = output.props.children[0].props.children;
     const parent = innerWrapper.props.children[1];
-    expect(parent.props.children[0]).toEqualJSX(expected);
+    expect(parent.props.children[1]).toEqualJSX(expected);
   });
 
   it('doesn\'t show relations when they don\'t exist', function() {
@@ -747,11 +766,12 @@ describe('EntityContent', function() {
         pluralize={pluralize}
         renderMarkdown={renderMarkdown}
         scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
         showTerms={sinon.stub()}
         staticURL="http://example.com" />, true);
     const output = renderer.getRenderOutput();
     const innerWrapper = output.props.children[0].props.children;
-    const relationsComponent = innerWrapper.props.children[1].props.children[2];
+    const relationsComponent = innerWrapper.props.children[1].props.children[3];
     assert.equal(relationsComponent, undefined);
   });
 
@@ -788,14 +808,15 @@ describe('EntityContent', function() {
         pluralize={pluralize}
         renderMarkdown={renderMarkdown}
         scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
         showTerms={sinon.stub()}
         staticURL="http://example.com" />, true);
     const output = renderer.getRenderOutput();
     const innerWrapper = output.props.children[0].props.children;
     const plansOutput = innerWrapper.props.children[0].props.children[3];
     const expected = (
-      <div id="plans"
-        className="row entity-content__plans">
+      <div className="row entity-content__plans"
+        id="plans">
         <div className="inner-wrapper">
           <div className="twelve-col">
             <h2 className="entity-content__header">Plans</h2>
@@ -900,6 +921,7 @@ describe('EntityContent', function() {
         pluralize={pluralize}
         renderMarkdown={renderMarkdown}
         scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
         showTerms={sinon.stub()}
         staticURL="http://example.com" />, true);
     const output = renderer.getRenderOutput();
@@ -925,17 +947,97 @@ describe('EntityContent', function() {
         entityModel={mockEntity}
         getDiagramURL={sinon.stub()}
         getFile={getFile}
-        hasPlans={true}
         hash="readme"
+        hasPlans={true}
         plans={[]}
         pluralize={pluralize}
         renderMarkdown={renderMarkdown}
         scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
         showTerms={sinon.stub()}
         staticURL="http://example.com" />, true);
     const output = renderer.getRenderOutput();
     const innerWrapper = output.props.children[0].props.children;
     const plansOutput = innerWrapper.props.children[0].props.children[3];
     assert.strictEqual(plansOutput, undefined);
+  });
+
+  it('can display an expert card for a bundle', () => {
+    mockEntity = jsTestUtils.makeEntity(true);
+    const renderer = jsTestUtils.shallowRender(
+      <EntityContent
+        addNotification={sinon.stub()}
+        apiUrl="http://example.com"
+        changeState={sinon.stub()}
+        entityModel={mockEntity}
+        getDiagramURL={sinon.stub().returns('testRef')}
+        getFile={sinon.stub()}
+        hasPlans={false}
+        pluralize={sinon.stub()}
+        renderMarkdown={sinon.stub()}
+        scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
+        showTerms={sinon.stub()}
+        staticURL="http://example.com" />, true);
+    const output = renderer.getRenderOutput();
+    const expected = (
+      <ExpertContactCard
+        expert="test-owner"
+        sendAnalytics={sinon.stub()}
+        staticURL="http://example.com" />);
+    const innerWrapper = output.props.children[0].props.children;
+    const parent = innerWrapper.props.children[1];
+    expect(parent.props.children[0]).toEqualJSX(expected);
+  });
+
+  it('can display an expert card for a charm with plans', () => {
+    mockEntity = jsTestUtils.makeEntity();
+    const renderer = jsTestUtils.shallowRender(
+      <EntityContent
+        addNotification={sinon.stub()}
+        apiUrl="http://example.com"
+        changeState={sinon.stub()}
+        entityModel={mockEntity}
+        getDiagramURL={sinon.stub().returns('testRef')}
+        getFile={sinon.stub()}
+        hasPlans={true}
+        pluralize={sinon.stub()}
+        renderMarkdown={sinon.stub()}
+        scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
+        showTerms={sinon.stub()}
+        staticURL="http://example.com" />, true);
+    const output = renderer.getRenderOutput();
+    const expected = (
+      <ExpertContactCard
+        expert="test-owner"
+        sendAnalytics={sinon.stub()}
+        staticURL="http://example.com" />);
+    const innerWrapper = output.props.children[0].props.children;
+    const parent = innerWrapper.props.children[1];
+    expect(parent.props.children[0]).toEqualJSX(expected);
+  });
+
+  it('does not display an expert card for a charm with no plans', () => {
+    mockEntity = jsTestUtils.makeEntity();
+    const renderer = jsTestUtils.shallowRender(
+      <EntityContent
+        addNotification={sinon.stub()}
+        apiUrl="http://example.com"
+        changeState={sinon.stub()}
+        entityModel={mockEntity}
+        getDiagramURL={sinon.stub().returns('testRef')}
+        getFile={sinon.stub()}
+        hasPlans={false}
+        pluralize={sinon.stub()}
+        renderMarkdown={sinon.stub()}
+        scrollCharmbrowser={sinon.stub()}
+        sendAnalytics={sinon.stub()}
+        showTerms={sinon.stub()}
+        staticURL="http://example.com" />, true);
+    const output = renderer.getRenderOutput();
+    const innerWrapper = output.props.children[0].props.children;
+    const parent = innerWrapper.props.children[1];
+    assert.strictEqual(parent.props.children[0], null);
   });
 });

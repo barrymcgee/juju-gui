@@ -282,15 +282,12 @@ class DeploymentFlow extends React.Component {
   }
 
   /**
-    Handle closing the panel when the close button is clicked.
-
-    @method _handleClose
+    The function to be called after deploy.
     @param {String} err An error if deployment failed, null otherwise.
   */
-  _handleClose(err) {
+  _deployCallback(err) {
     if (err) {
-      // Error handling is already done by the original deploy callback.
-      // Here we need to just prevent the deployment flow to close.
+      this.setState({deploying: false});
       return;
     }
     this.props.changeState({
@@ -320,7 +317,7 @@ class DeploymentFlow extends React.Component {
     if (!this._deploymentAllowed()) {
       // This should never happen, as in these cases the deployment button is
       // disabled.
-      console.log('deploy button clicked but it should have been disabled');
+      console.error('deploy button clicked but it should have been disabled');
       return;
     }
     this.setState({deploying: true});
@@ -380,7 +377,7 @@ class DeploymentFlow extends React.Component {
       args.config['vpc-id-force'] = this.state.vpcIdForce;
     }
     const deploy = this.props.deploy.bind(
-      this, this._handleClose.bind(this), true, this.props.modelName, args);
+      this, this._deployCallback.bind(this), true, this.props.modelName, args);
     if (this.state.newTerms.length > 0) {
       const terms = this.state.newTerms.map(term => {
         const args = {
@@ -557,8 +554,8 @@ class DeploymentFlow extends React.Component {
           addNotification={this.props.addNotification}
           cloud={cloud}
           getGithubSSHKeys={this.props.getGithubSSHKeys}
-          setSSHKeys={this._setSSHKeys.bind(this)}
           setLaunchpadUsernames={this._setLaunchpadUsernames.bind(this)}
+          setSSHKeys={this._setSSHKeys.bind(this)}
           username={this.props.username}
           WebHandler={this.props.WebHandler} />
       </DeploymentSection>);
@@ -679,8 +676,8 @@ class DeploymentFlow extends React.Component {
         callback={callback}
         gisf={this.props.gisf}
         isDirectDeploy={state.isDirectDeploy}
-        showLoginLinks={this._shouldShowLoginLinks()}
-        loginToController={this.props.loginToController} />);
+        loginToController={this.props.loginToController}
+        showLoginLinks={this._shouldShowLoginLinks()} />);
   }
 
   /**
@@ -708,8 +705,8 @@ class DeploymentFlow extends React.Component {
           addNotification={this.props.addNotification}
           cloud={cloud}
           controllerIsReady={this.props.controllerIsReady}
-          listClouds={this.props.listClouds}
           getCloudProviderDetails={this.props.getCloudProviderDetails}
+          listClouds={this.props.listClouds}
           setCloud={this._setCloud.bind(this)} />
       </DeploymentSection>);
   }
@@ -735,14 +732,14 @@ class DeploymentFlow extends React.Component {
         <DeploymentCredential
           acl={this.props.acl}
           addNotification={this.props.addNotification}
-          credential={this.state.credential}
           cloud={cloud}
           controllerIsReady={this.props.controllerIsReady}
-          getCloudProviderDetails={this.props.getCloudProviderDetails}
+          credential={this.state.credential}
           editable={!this.props.modelCommitted}
           generateCloudCredentialName={this.props.generateCloudCredentialName}
-          getCloudCredentials={this.props.getCloudCredentials}
           getCloudCredentialNames={this.props.getCloudCredentialNames}
+          getCloudCredentials={this.props.getCloudCredentials}
+          getCloudProviderDetails={this.props.getCloudProviderDetails}
           region={this.state.region}
           sendAnalytics={this.sendAnalytics.bind(this)}
           setCredential={this._setCredential.bind(this)}
@@ -803,17 +800,17 @@ class DeploymentFlow extends React.Component {
             addNotification={this.props.addNotification}
             changesFilterByParent={this.props.changesFilterByParent}
             charmsGetById={this.props.charmsGetById}
-            getCurrentChangeSet={this.props.getCurrentChangeSet}
             generateAllChangeDescriptions={
               this.props.generateAllChangeDescriptions}
             generateChangeDescription={
               this.props.generateChangeDescription}
-            sortDescriptionsByApplication={
-              this.props.sortDescriptionsByApplication}
+            getCurrentChangeSet={this.props.getCurrentChangeSet}
+            getServiceByName={this.props.getServiceByName}
             listPlansForCharm={this.props.listPlansForCharm}
             parseTermId={this._parseTermId.bind(this)}
-            getServiceByName={this.props.getServiceByName}
             showTerms={this.props.showTerms}
+            sortDescriptionsByApplication={
+              this.props.sortDescriptionsByApplication}
             withPlans={this.props.withPlans} />
         </AccordionSection>
       </div>);
@@ -909,9 +906,9 @@ class DeploymentFlow extends React.Component {
     return (
       <div className={classes}>
         <input className="deployment-flow__deploy-checkbox"
-          onChange={this._handleTermsAgreement.bind(this)}
           disabled={disabled}
           id="terms"
+          onChange={this._handleTermsAgreement.bind(this)}
           type="checkbox" />
         <label className="deployment-flow__deploy-label"
           htmlFor="terms">
@@ -930,7 +927,13 @@ class DeploymentFlow extends React.Component {
     if (!status.visible) {
       return;
     }
-    const deployTitle = this.state.deploying ? 'Deploying...' : 'Deploy';
+    const deploying = this.state.deploying;
+    let deployTitle;
+    if (this.props.modelCommitted) {
+      deployTitle = deploying ? 'Committing...' : 'Commit';
+    } else {
+      deployTitle = deploying ? 'Deploying...' : 'Deploy';
+    }
     const classes = classNames(
       'inner-wrapper',
       'deployment-flow__deploy',

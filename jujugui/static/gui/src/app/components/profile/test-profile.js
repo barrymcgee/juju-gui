@@ -20,6 +20,7 @@ describe('Profile', function() {
         acl={options.acl || acl}
         activeSection={options.activeSection || undefined}
         addNotification={sinon.stub()}
+        addToModel={options.addToModel || sinon.stub()}
         bakery={{}}
         baseURL="/gui/"
         changeState={options.changeState || sinon.stub()}
@@ -30,10 +31,10 @@ describe('Profile', function() {
           url: '/charmstore'
         }}
         controllerAPI={controllerAPI}
-        controllerIsReady={sinon.stub()}
         controllerIP={'1.2.3.4'}
+        controllerIsReady={sinon.stub()}
         controllerUser={options.controllerUser || 'spinach'}
-        addToModel={options.addToModel || sinon.stub()}
+        destroyModel={sinon.stub()}
         facadesExist={true}
         generatePath={options.generatePath || sinon.stub()}
         getModelName={options.getModelName || sinon.stub()}
@@ -41,14 +42,23 @@ describe('Profile', function() {
         gisf={true}
         initUtils={initUtils}
         payment={options.payment}
+        sendAnalytics={sinon.stub()}
         showPay={options.showPay || false}
         storeUser={options.storeUser || sinon.stub()}
         stripe={options.stripe}
-        destroyModels={sinon.stub()}
-        sendAnalytics={sinon.stub()}
         switchModel={sinon.stub()}
-        userInfo={{profile: 'spinach'}} />, true);
+        userInfo={{
+          isCurrent: true,
+          profile: 'spinach'
+        }} />, true);
   }
+
+  // Return the sectionsMap stored in the given component.
+  function getSectionsMap(comp) {
+    const navigation = comp.props.children[1].props.children.props.children[0];
+    return navigation.props.sectionsMap;
+  }
+
   let acl, controllerAPI, initUtils;
 
   beforeEach(() => {
@@ -82,20 +92,20 @@ describe('Profile', function() {
           controllerIP={'1.2.3.4'}
           getUser={sinon.stub()}
           gisf={true}
-          username="spinach" />
+          userInfo={instance.props.userInfo} />
         <div className="twelve-col">
           <div className="profile__content inner-wrapper">
             <ProfileNavigation
-              activeSection={instance.sectionsMap.entries().next().value[0]}
+              activeSection="models"
               changeState={instance.props.changeState}
-              sectionsMap={instance.sectionsMap} />
+              sectionsMap={new Map()} />
             <ProfileModelList
               acl={instance.props.acl}
               addNotification={instance.props.addNotification}
               baseURL={instance.props.baseURL}
               changeState={instance.props.changeState}
+              destroyModel={instance.props.destroyModel}
               facadesExist={instance.props.facadesExist}
-              destroyModels={instance.props.destroyModels}
               listModelsWithInfo={instance.props.controllerAPI.listModelsWithInfo}
               switchModel={instance.props.switchModel}
               userInfo={instance.props.userInfo} />
@@ -108,29 +118,25 @@ describe('Profile', function() {
 
   it('does not show the payments section when the flag is off', () => {
     const renderer = renderComponent();
-    const instance = renderer.getMountedInstance();
-    assert.isUndefined(instance.sectionsMap.get('payment'));
+    const sectionsMap = getSectionsMap(renderer.getRenderOutput());
+    assert.strictEqual(sectionsMap.get('payment'), undefined);
   });
 
-  it('can show the payments section when the flag is on', () => {
+  it('shows the payments section when the flag is on', () => {
     const renderer = renderComponent({showPay: true});
-    const instance = renderer.getMountedInstance();
-    assert.isObject(instance.sectionsMap.get('payment'));
+    const sectionsMap = getSectionsMap(renderer.getRenderOutput());
+    assert.isObject(sectionsMap.get('payment'));
   });
 
   it('hides certain sections when viewing others profile pages', () => {
-    const renderer = renderComponent({
-      controllerUser: 'foo'
-    });
-    const instance = renderer.getMountedInstance();
+    const renderer = renderComponent({controllerUser: 'foo'});
+    const sectionsMap = getSectionsMap(renderer.getRenderOutput());
     const allowedKeys = ['charms', 'bundles'];
-    assert.deepEqual(Array.from(instance.sectionsMap.keys()), allowedKeys);
+    assert.deepEqual(Array.from(sectionsMap.keys()), allowedKeys);
   });
 
   it('correctly parses the URL', () => {
-    const renderer = renderComponent({
-      activeSection: 'credentials/aws_test'
-    });
+    const renderer = renderComponent({activeSection: 'credentials/aws_test'});
     const instance = renderer.getMountedInstance();
     assert.deepEqual(instance._getProfileURL(), {
       full: 'credentials/aws_test',

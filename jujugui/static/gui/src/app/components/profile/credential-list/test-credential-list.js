@@ -9,7 +9,7 @@ const BasicTable = require('../../basic-table/basic-table');
 const CredentialAddEdit = require('../../credential-add-edit/credential-add-edit');
 const ExpandingRow = require('../../expanding-row/expanding-row');
 const GenericButton = require('../../generic-button/generic-button');
-const MoreMenu = require('../../more-menu/more-menu');
+const ButtonDropdown = require('../../button-dropdown/button-dropdown');
 const ProfileCredentialList = require('./credential-list');
 const ProfileCredentialListDelete = require('./delete/delete');
 
@@ -86,8 +86,8 @@ describe('ProfileCredentialList', () => {
         acl={acl}
         addNotification={options.addNotification || sinon.stub()}
         controllerAPI={options.controllerAPI || controllerAPI}
-        credential="azure_foo@external_cred1"
         controllerIsReady={options.controllerIsReady || sinon.stub()}
+        credential="azure_foo@external_cred1"
         initUtils={options.initUtils || initUtils}
         sendAnalytics={options.sendAnalytics || sinon.stub()}
         username={options.username || 'foo@external'} />, true);
@@ -246,27 +246,7 @@ describe('ProfileCredentialList', () => {
             clickable={false}
             expanded={false}>
             <div></div>
-            <div className="twelve-col">
-              <CredentialAddEdit
-                key="deployment-credential-add"
-                acl={acl}
-                addNotification={sinon.stub()}
-                controllerAPI={{
-                  listClouds: sinon.stub(),
-                  reshape: sinon.stub(),
-                  updateCloudCredential: sinon.stub()
-                }}
-                controllerIsReady={sinon.stub()}
-                credential={undefined}
-                credentials={[
-                  'aws_foo@external_cred1', 'aws_foo@external_testcred',
-                  'azure_foo@external_cred1', 'google_foo@external_admin']}
-                initUtils={initUtils}
-                onCancel={sinon.stub()}
-                onCredentialUpdated={sinon.stub()}
-                sendAnalytics={sinon.stub()}
-                username="foo@external" />
-            </div>
+            <div className="twelve-col"></div>
           </ExpandingRow>
           <BasicTable
             headerClasses={['profile__entity-table-header-row']}
@@ -299,9 +279,9 @@ describe('ProfileCredentialList', () => {
                 columnSize: 3
               }, {
                 content: (
-                  <MoreMenu
+                  <ButtonDropdown
                     icon="contextual-menu-horizontal"
-                    items={[{
+                    listItems={[{
                       label: 'Edit',
                       action: sinon.stub()
                     }, {
@@ -327,9 +307,9 @@ describe('ProfileCredentialList', () => {
                 columnSize: 3
               }, {
                 content: (
-                  <MoreMenu
+                  <ButtonDropdown
                     icon="contextual-menu-horizontal"
-                    items={[{
+                    listItems={[{
                       label: 'Edit',
                       action: sinon.stub()
                     }, {
@@ -355,9 +335,9 @@ describe('ProfileCredentialList', () => {
                 columnSize: 3
               }, {
                 content: (
-                  <MoreMenu
+                  <ButtonDropdown
                     icon="contextual-menu-horizontal"
-                    items={[{
+                    listItems={[{
                       label: 'Edit',
                       action: sinon.stub()
                     }, {
@@ -383,9 +363,9 @@ describe('ProfileCredentialList', () => {
                 columnSize: 3
               }, {
                 content: (
-                  <MoreMenu
+                  <ButtonDropdown
                     icon="contextual-menu-horizontal"
-                    items={[{
+                    listItems={[{
                       label: 'Edit',
                       action: sinon.stub()
                     }, {
@@ -403,6 +383,45 @@ describe('ProfileCredentialList', () => {
         </div>
       );
       expect(output).toEqualJSX(expected);
+    });
+  });
+
+  it('can show the add form', () => {
+    const renderer = shallowRenderComponent();
+    const instance = renderer.getMountedInstance();
+    return instance._getClouds().then(() => {
+      let output = renderer.getRenderOutput();
+      output.props.children[1].props.children.props.children.props.action();
+      output = renderer.getRenderOutput();
+      const expected = (
+        <ExpandingRow
+          classes={{'twelve-col': true}}
+          clickable={false}
+          expanded={true}>
+          <div></div>
+          <div className="twelve-col">
+            <CredentialAddEdit
+              acl={acl}
+              addNotification={sinon.stub()}
+              controllerAPI={{
+                listClouds: sinon.stub(),
+                reshape: sinon.stub(),
+                updateCloudCredential: sinon.stub()
+              }}
+              controllerIsReady={sinon.stub()}
+              credential={undefined}
+              credentials={[
+                'aws_foo@external_cred1', 'aws_foo@external_testcred',
+                'azure_foo@external_cred1', 'google_foo@external_admin']}
+              initUtils={initUtils}
+              key="deployment-credential-add"
+              onCancel={sinon.stub()}
+              onCredentialUpdated={sinon.stub()}
+              sendAnalytics={sinon.stub()}
+              username="foo@external" />
+          </div>
+        </ExpandingRow>);
+      expect(output.props.children[2]).toEqualJSX(expected);
     });
   });
 
@@ -444,9 +463,9 @@ describe('ProfileCredentialList', () => {
               columnSize: 3
             }, {
               content: (
-                <MoreMenu
+                <ButtonDropdown
                   icon="contextual-menu-horizontal"
-                  items={[{
+                  listItems={[{
                     label: 'Edit',
                     action: sinon.stub()
                   }, {
@@ -457,7 +476,6 @@ describe('ProfileCredentialList', () => {
             }],
             expandedContent: (
               <CredentialAddEdit
-                key="deployment-credential-add"
                 acl={acl}
                 addNotification={sinon.stub()}
                 controllerAPI={{
@@ -471,6 +489,7 @@ describe('ProfileCredentialList', () => {
                   'aws_foo@external_cred1', 'aws_foo@external_testcred',
                   'azure_foo@external_cred1', 'google_foo@external_admin']}
                 initUtils={initUtils}
+                key="deployment-credential-add"
                 onCancel={sinon.stub()}
                 onCredentialUpdated={sinon.stub()}
                 sendAnalytics={sinon.stub()}
@@ -491,9 +510,9 @@ describe('ProfileCredentialList', () => {
               columnSize: 3
             }, {
               content: (
-                <MoreMenu
+                <ButtonDropdown
                   icon="contextual-menu-horizontal"
-                  items={[{
+                  listItems={[{
                     label: 'Edit',
                     action: sinon.stub()
                   }, {
@@ -519,9 +538,9 @@ describe('ProfileCredentialList', () => {
               columnSize: 3
             }, {
               content: (
-                <MoreMenu
+                <ButtonDropdown
                   icon="contextual-menu-horizontal"
-                  items={[{
+                  listItems={[{
                     label: 'Edit',
                     action: sinon.stub()
                   }, {
@@ -547,9 +566,9 @@ describe('ProfileCredentialList', () => {
               columnSize: 3
             }, {
               content: (
-                <MoreMenu
+                <ButtonDropdown
                   icon="contextual-menu-horizontal"
-                  items={[{
+                  listItems={[{
                     label: 'Edit',
                     action: sinon.stub()
                   }, {

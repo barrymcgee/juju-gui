@@ -2,41 +2,47 @@
 'use strict';
 
 const React = require('react');
+const enzyme = require('enzyme');
 
 const CheckListItem = require('./check-list-item');
 
-const jsTestUtils = require('../../utils/component-test-utils');
-const testUtils = require('react-dom/test-utils');
-
 describe('CheckListItem', () => {
 
+  const renderComponent = (options = {}) => enzyme.shallow(
+    <CheckListItem
+      action={options.action}
+      aside={options.aside}
+      checked={options.checked}
+      className={options.className}
+      disabled={options.disabled}
+      extraInfo={options.extraInfo}
+      id={options.id}
+      label={options.label || 'a-label'}
+      whenChanged={options.whenChanged || sinon.stub()} />
+  );
+
   it('renders ui based on props', () => {
-    const renderer = jsTestUtils.shallowRender(
-      <CheckListItem
-        key="unique"
-        checked={false}
-        disabled={false}
-        label="a-label"
-        id="apache/2"
-        className="select-all"
-        aside="3"
-        whenChanged={sinon.stub()} />, true);
-    const instance = renderer.getMountedInstance();
-    const output = renderer.getRenderOutput();
-    expect(output).toEqualJSX(
+    const wrapper = renderComponent({
+      aside: '3',
+      checked: false,
+      className: 'select-all',
+      disabled: false,
+      id: 'apache/2'
+    });
+    const expected = (
       <li className="check-list-item check-list-item--select-all"
         data-id="apache/2"
-        onClick={undefined} tabIndex="0" role="button">
+        onClick={undefined} role="button" tabIndex="0">
         <label htmlFor="a-label-item">
           <div className="check-list-item__hit-area"
-            onClick={instance._hitAreaClick}>
+            onClick={wrapper.find('.check-list-item__hit-area').prop('onClick')}>
             <input
+              checked={false}
               disabled={false}
-              type="checkbox"
               id="a-label-item"
-              onClick={instance._stopBubble}
-              onChange={instance._handleChange}
-              checked={false} />
+              onChange={wrapper.find('input').prop('onChange')}
+              onClick={wrapper.find('input').prop('onClick')}
+              type="checkbox" />
           </div>
           <span className="check-list-item__label">
               a-label
@@ -47,90 +53,39 @@ describe('CheckListItem', () => {
           </span>
         </label>
       </li>);
+    assert.compareJSX(wrapper, expected);
   });
 
   it('displays extraInfo when provided', () => {
-    const renderer = jsTestUtils.shallowRender(
-      <CheckListItem
-        key="unique"
-        checked={false}
-        disabled={false}
-        label="a-label"
-        id="apache/2"
-        aside="3"
-        extraInfo="Current workload status"
-        whenChanged={sinon.stub()} />, true);
-    const instance = renderer.getMountedInstance();
-    const output = renderer.getRenderOutput();
-    expect(output).toEqualJSX(
-      <li className="check-list-item check-list-item--extra-info"
-        data-id="apache/2"
-        onClick={undefined} tabIndex="0" role="button">
-        <label htmlFor="a-label-item">
-          <div className="check-list-item__hit-area"
-            onClick={instance._hitAreaClick}>
-            <input
-              disabled={false}
-              type="checkbox"
-              id="a-label-item"
-              onClick={instance._stopBubble}
-              onChange={instance._handleChange}
-              checked={false} />
-          </div>
-          <span className="check-list-item__label">
-              a-label
-          </span>
-          <span className="check-list-item__extra-info"
-            title="Current workload status">
-              Current workload status
-          </span>
-          <span className="check-list-item__aside">
-              3
-          </span>
-        </label>
-      </li>);
+    const wrapper = renderComponent({
+      extraInfo: 'Current workload status'
+    });
+    const expected = (
+      <span className="check-list-item__extra-info"
+        title="Current workload status">
+          Current workload status
+      </span>);
+    assert.compareJSX(wrapper.find('.check-list-item__extra-info'), expected);
   });
 
   it('does not set a "for" id on the label if it is a nav element', () => {
-    const output = jsTestUtils.shallowRender(
-      <CheckListItem
-        key="unique"
-        checked={false}
-        disabled={false}
-        label="a-label"
-        action={sinon.stub()}
-        id="apache/2"
-        whenChanged={sinon.stub()} />);
-    assert.equal(output.props.children.props.htmlFor, undefined);
+    const wrapper = renderComponent({
+      action: sinon.stub()
+    });
+    assert.strictEqual(wrapper.find('label').prop('htmlFor'), undefined);
   });
 
   it('has a nav class if it is a nav element', () => {
-    const output = jsTestUtils.shallowRender(
-      <CheckListItem
-        key="unique"
-        checked={false}
-        disabled={false}
-        label="a-label"
-        action={sinon.stub()}
-        id="apache/2"
-        whenChanged={sinon.stub()} />);
-    assert.isTrue(output.props.className.indexOf(
-      'check-list-item--nav') > -1);
+    const wrapper = renderComponent({
+      action: sinon.stub()
+    });
+    assert.equal(wrapper.prop('className').includes('check-list-item--nav'), true);
   });
 
   it('calls the supplied whenChanged if supplied', () => {
     const whenChanged = sinon.stub();
-    const output = jsTestUtils.shallowRender(
-      <CheckListItem
-        key="unique"
-        checked={false}
-        disabled={false}
-        whenChanged={whenChanged}
-        label="a-label" />);
-    const label = output.props.children;
-    const hitArea = label.props.children[0];
-    const input = hitArea.props.children;
-    input.props.onChange({
+    const wrapper = renderComponent({ whenChanged });
+    wrapper.find('input').simulate('change', {
       currentTarget: {
         checked: true
       }
@@ -140,77 +95,23 @@ describe('CheckListItem', () => {
   });
 
   it('does not bubble the click event when clicking a checkbox', () => {
-    const actionStub = sinon.stub();
-    // Need to render the full component here as shallowRenderer does not yet
-    // support simulating click events.
-    const output = testUtils.renderIntoDocument(
-      <CheckListItem
-        key="unique"
-        checked={false}
-        disabled={false}
-        label="a-label"
-        id="apache/2"
-        action={actionStub}
-        whenChanged={sinon.stub()} />);
-    const checkbox = testUtils.findRenderedDOMComponentWithTag(output, 'input');
-    testUtils.Simulate.click(checkbox);
-    assert.equal(actionStub.callCount, 0);
+    const action = sinon.stub();
+    const wrapper = renderComponent({ action });
+    wrapper.find('input').simulate('click', { stopPropagation: sinon.stub() });
+    assert.equal(action.callCount, 0);
   });
 
   it('can have a disabled checkbox', () => {
-    const renderer = jsTestUtils.shallowRender(
-      <CheckListItem
-        key="unique"
-        checked={false}
-        disabled={true}
-        label="a-label"
-        id="apache/2"
-        className="select-all"
-        aside="3"
-        whenChanged={sinon.stub()} />, true);
-    const instance = renderer.getMountedInstance();
-    const output = renderer.getRenderOutput();
-    const expected = (
-      <input
-        disabled={true}
-        type="checkbox"
-        id="a-label-item"
-        onClick={instance._stopBubble}
-        onChange={instance._handleChange}
-        checked={false} />);
-    const label = output.props.children;
-    const hitArea = label.props.children[0];
-    const input = hitArea.props.children;
-    expect(input).toEqualJSX(expected);
+    const wrapper = renderComponent({ disabled: true });
+    assert.equal(wrapper.find('input').prop('disabled'), true);
   });
 
   it('can toggle the checkbox from the hit area', () => {
-    const renderer = jsTestUtils.shallowRender(
-      <CheckListItem
-        action={sinon.stub()}
-        checked={false}
-        disabled={false}
-        label="a-label"
-        whenChanged={sinon.stub()} />, true);
-    const instance = renderer.getMountedInstance();
-    let output = renderer.getRenderOutput();
-    // Simulate clicking on the hit area.
-    let label = output.props.children;
-    let hitArea = label.props.children[0];
-    hitArea.props.onClick(
+    const wrapper = renderComponent({ action: sinon.stub() });
+    assert.equal(wrapper.find('input').prop('checked'), false);
+    wrapper.find('.check-list-item__hit-area').simulate('click',
       {stopPropagation: sinon.stub()});
-    output = renderer.getRenderOutput();
-    const expected = (
-      <input
-        disabled={false}
-        type="checkbox"
-        id="a-label-item"
-        onClick={instance._stopBubble}
-        onChange={instance._handleChange}
-        checked={true} />);
-    label = output.props.children;
-    hitArea = label.props.children[0];
-    const input = hitArea.props.children;
-    expect(input).toEqualJSX(expected);
+    wrapper.update();
+    assert.equal(wrapper.find('input').prop('checked'), true);
   });
 });

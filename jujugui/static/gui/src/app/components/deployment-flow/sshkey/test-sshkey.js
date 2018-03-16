@@ -33,13 +33,13 @@ describe('DeploymentSSHKey', function() {
     }
     const renderer = jsTestUtils.shallowRender(
       <DeploymentSSHKey
-        WebHandler={sinon.stub()}
         addNotification={addNotification}
         cloud={cloud}
         getGithubSSHKeys={_getGithubSSHKeys || getGithubSSHKeys}
-        setSSHKeys={setSSHKeys}
         setLaunchpadUsernames={setLaunchpadUsernames}
-        username={username} />, true);
+        setSSHKeys={setSSHKeys}
+        username={username}
+        WebHandler={sinon.stub()} />, true);
     return {
       instance: renderer.getMountedInstance(),
       output: renderer.getRenderOutput(),
@@ -66,7 +66,6 @@ describe('DeploymentSSHKey', function() {
           <div className="three-col no-margin-bottom">
             <InsetSelect
               disabled={false}
-              ref="sshSource"
               label="Source"
               onChange={comp.instance._handleSourceChange.bind(comp.instance)}
               options={[
@@ -82,23 +81,24 @@ describe('DeploymentSSHKey', function() {
                   label: 'Launchpad',
                   value: 'launchpad'
                 }
-              ]} />
+              ]}
+              ref="sshSource" />
           </div>
           <div className="three-col last-col no-margin-bottom">
             <GenericInput
-              ref="githubUsername"
               autocomplete
               key="githubUsername"
               label="GitHub username"
               onKeyUp={comp.instance._onKeyUp.
                 bind(comp.instance)}
+              ref="githubUsername"
               type="text" />
           </div>
           <div className="right">
             <GenericButton
               action={comp.instance._handleAddMoreKeys.bind(comp.instance)}
               disabled
-              type="positive">Add Keys</GenericButton>
+              type="positive">Add keys</GenericButton>
           </div>
         </div>
       </div>
@@ -126,7 +126,6 @@ describe('DeploymentSSHKey', function() {
           <div className="three-col no-margin-bottom">
             <InsetSelect
               disabled={false}
-              ref="sshSource"
               label="Source"
               onChange={comp.instance._handleSourceChange.bind(comp.instance)}
               options={[
@@ -142,23 +141,24 @@ describe('DeploymentSSHKey', function() {
                   label: 'Launchpad',
                   value: 'launchpad'
                 }
-              ]} />
+              ]}
+              ref="sshSource" />
           </div>
           <div className="three-col last-col no-margin-bottom">
             <GenericInput
-              ref="launchpadUsername"
               autocomplete
               key="launchpadUsername"
               label="Launchpad username"
               onKeyUp={comp.instance._onKeyUp.
                 bind(comp.instance)}
-              value="rose"
-              type="text" />
+              ref="launchpadUsername"
+              type="text"
+              value="rose" />
           </div>
           <div className="right">
             <GenericButton
               action={comp.instance._handleAddMoreKeys.bind(comp.instance)}
-              type="positive">Add Keys</GenericButton>
+              type="positive">Add keys</GenericButton>
           </div>
         </div>
       </div>
@@ -178,7 +178,6 @@ describe('DeploymentSSHKey', function() {
         <div className="twelve-col no-margin-bottom">
           <div className="three-col no-margin-bottom">
             <InsetSelect
-              ref="sshSource"
               label="Source"
               onChange={comp.instance._handleSourceChange.bind(comp.instance)}
               options={[
@@ -194,22 +193,23 @@ describe('DeploymentSSHKey', function() {
                   label: 'Launchpad',
                   value: 'launchpad'
                 }
-              ]} />
+              ]}
+              ref="sshSource" />
           </div>
           <div className="three-col last-col no-margin-bottom">
             <GenericInput
-              ref="githubUsername"
               autocomplete
               label="GitHub username"
               onKeyUp={comp.instance._onKeyUp.
                 bind(comp.instance)}
+              ref="githubUsername"
               type="text" />
           </div>
           <div className="right">
             <GenericButton
               action={comp.instance._handleAddMoreKeys.bind(comp.instance)}
               disabled
-              type="positive">Add Keys</GenericButton>
+              type="positive">Add keys</GenericButton>
           </div>
         </div>
       </div>
@@ -347,6 +347,31 @@ describe('DeploymentSSHKey', function() {
           {id: 1, type: 'ssh-rsa', body: 'thekey', text: 'ssh-rsa thekey'},
           {id: 2, type: 'ssh-rsa', body: 'thekey2', text: 'ssh-rsa thekey2'}
         ]);
+    });
+
+    it('disables the add key button after keys stored', function() {
+      const comp = render('gce');
+      let githubUsername = 'spinach';
+      comp.instance.refs = {
+        githubUsername: {
+          getValue: () => githubUsername,
+          focus: sinon.stub(),
+          setValue: value => {
+            githubUsername = value;
+          }
+        }
+      };
+      comp.instance.componentDidUpdate();
+      let output = comp.renderer.getRenderOutput();
+      let button = output.props.children[3].props.children[2].props.children;
+      assert.equal(button.props.disabled, false);
+      comp.instance._addGithubKeysCallback(null, [
+        {id: 1, type: 'ssh-rsa', body: 'thekey', text: 'ssh-rsa thekey'}
+      ]);
+      expect(comp.instance.props.setSSHKeys.callCount).toEqual(1);
+      output = comp.renderer.getRenderOutput();
+      button = output.props.children[3].props.children[2].props.children;
+      assert.equal(button.props.disabled, true);
     });
   });
 
@@ -561,7 +586,7 @@ describe('DeploymentSSHKey', function() {
           action={comp.instance._handleAddMoreKeys.bind(comp.instance)}
           disabled={true}
           type="positive">
-          Add Keys
+          Add keys
         </GenericButton>
       </div>
     );
@@ -578,7 +603,7 @@ describe('DeploymentSSHKey', function() {
           action={comp.instance._handleAddMoreKeys.bind(comp.instance)}
           disabled={false}
           type="positive">
-          Add Keys
+          Add keys
         </GenericButton>
       </div>
     );

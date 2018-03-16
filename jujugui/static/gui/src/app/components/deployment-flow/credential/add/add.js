@@ -50,11 +50,11 @@ class DeploymentCredentialAdd extends React.Component {
   }
 
   /**
-    Handling clicking on a cloud option.
-
-    @method _handleCloudClick
+    Handle submitting the form.
+    @param evt {Object} The submit event.
   */
-  _handleAddCredentials() {
+  _handleAddCredentials(evt) {
+    evt.preventDefault();
     const props = this.props;
     const info = this._getInfo();
     if (!info || !info.forms) {
@@ -166,6 +166,9 @@ class DeploymentCredentialAdd extends React.Component {
     if (!info || !info.forms) {
       return;
     }
+    if (!info.forms[this.state.authType]) {
+      return;
+    }
     const fields = info.forms[this.state.authType].map(field => {
       // If the required parameter is not provided then default it to true.
       const required = field.required === undefined ? true : field.required;
@@ -178,8 +181,8 @@ class DeploymentCredentialAdd extends React.Component {
               disabled={isReadOnly}
               key={field.id}
               label={`Upload ${info.title} .json auth-file`}
-              required={required}
-              ref={field.id} />
+              ref={field.id}
+              required={required} />
           </div>);
       }
       return (
@@ -189,8 +192,8 @@ class DeploymentCredentialAdd extends React.Component {
           key={field.id}
           label={field.title}
           multiLine={field.multiLine}
-          required={required}
           ref={field.id}
+          required={required}
           type={field.type}
           validate={required ? [{
             regex: /\S+/,
@@ -223,7 +226,6 @@ class DeploymentCredentialAdd extends React.Component {
     // If a name was provided then we're editing, not adding.
     const prefix = props.credentialName ? 'Update' : 'Add';
     let buttons = [{
-      action: this._handleAddCredentials.bind(this),
       submit: true,
       title: `${prefix} cloud credential`,
       type: 'inline-positive'
@@ -260,14 +262,15 @@ class DeploymentCredentialAdd extends React.Component {
       });
     }
     const credentialName = props.credentialName;
+    const signupURL = info && info.signupUrl;
     return (
-      <div className="deployment-credential-add twelve-col">
+      <div className="deployment-credential-add twelve-col no-margin-bottom">
         <h4>
           {`${credentialName ? 'Update' : 'Create new'} ${title} credential`}
         </h4>
-        {credentialName ? null : (
+        {credentialName || !signupURL ? null : (
           <div className="twelve-col deployment-credential-add__signup">
-            <a className="deployment-credential-add__link" href={info && info.signupUrl}
+            <a className="deployment-credential-add__link" href={signupURL}
               target="_blank">
               Sign up for {title}
               &nbsp;
@@ -276,13 +279,14 @@ class DeploymentCredentialAdd extends React.Component {
                 size="12" />
             </a>
           </div>)}
-        <form className="twelve-col">
+        <form className="twelve-col no-margin-bottom"
+          onSubmit={this._handleAddCredentials.bind(this)}>
           <div className="six-col last-col">
             <GenericInput
               disabled={props.acl.isReadOnly() || !!credentialName}
               label={credentialNameLabel}
-              required={true}
               ref="credentialName"
+              required={true}
               validate={nameValidators}
               value={credentialName} />
           </div>
@@ -290,12 +294,12 @@ class DeploymentCredentialAdd extends React.Component {
             Enter credentials
           </h3>
           {this._generateCredentialsFields()}
+          <div className={
+            'deployment-credential-add__buttons twelve-col last-col no-margin-bottom'}>
+            <ButtonRow
+              buttons={buttons} />
+          </div>
         </form>
-        <div className={
-          'deployment-credential-add__buttons twelve-col last-col'}>
-          <ButtonRow
-            buttons={buttons} />
-        </div>
       </div>
     );
   }

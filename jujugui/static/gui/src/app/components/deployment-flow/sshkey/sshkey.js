@@ -127,9 +127,10 @@ class DeploymentSSHKey extends React.Component {
       }
     });
     this.props.setSSHKeys(SSHkeys);
-    this.setState({SSHkeys: SSHkeys, buttonDisabled: true});
+    this.setState({SSHkeys: SSHkeys});
     this.refs.githubUsername.setValue(null);
     this.refs.githubUsername.focus();
+    this._updateButtonState();
   }
 
   /**
@@ -244,9 +245,11 @@ class DeploymentSSHKey extends React.Component {
               {body}
             </div>
             <div className="one-col last-col">
-              <span className="added-keys__key-remove right" title="Remove key"
+              <span
+                className="added-keys__key-remove right"
+                onClick={this._removeKey.bind(this, key.id)}
                 role="button"
-                onClick={this._removeKey.bind(this, key.id)}>
+                title="Remove key">
                 <SvgIcon
                   name="close_16" size="16" />
               </span>
@@ -274,9 +277,9 @@ class DeploymentSSHKey extends React.Component {
             <div className="eleven-col">{username}</div>
             <div className="one-col last-col">
               <span className="added-keys__key-remove right"
-                title="Remove username"
+                onClick={this._removeLPUsername.bind(this, username)}
                 role="button"
-                onClick={this._removeLPUsername.bind(this, username)}>
+                title="Remove username">
                 <SvgIcon
                   name="close_16" size="16" />
               </span>
@@ -317,33 +320,33 @@ class DeploymentSSHKey extends React.Component {
       return (
         <div className="three-col last-col no-margin-bottom">
           <GenericInput
-            label="GitHub username"
             key="githubUsername"
-            ref="githubUsername"
+            label="GitHub username"
             multiLine={false}
-            onKeyUp={this._onKeyUp.bind(this)} />
+            onKeyUp={this._onKeyUp.bind(this)}
+            ref="githubUsername" />
         </div>
       );
     } else if (this.state.addSource === 'manual') {
       return (
         <div className="seven-col no-margin-bottom">
           <GenericInput
-            label="Enter your SSH key (typically found at ~/.ssh/id_rsa.pub)"
             key="sshKey"
-            ref="sshKey"
+            label="Enter your SSH key (typically found at ~/.ssh/id_rsa.pub)"
             multiLine={true}
-            onKeyUp={this._onKeyUp.bind(this)} />
+            onKeyUp={this._onKeyUp.bind(this)}
+            ref="sshKey" />
         </div>
       );
     } else if (this.state.addSource === 'launchpad') {
       return (
         <div className="three-col last-col no-margin-bottom">
           <GenericInput
-            label="Launchpad username"
             key="launchpadUsername"
-            ref="launchpadUsername"
+            label="Launchpad username"
             multiLine={false}
             onKeyUp={this._onKeyUp.bind(this)}
+            ref="launchpadUsername"
             value={this.props.username} />
         </div>
       );
@@ -356,16 +359,17 @@ class DeploymentSSHKey extends React.Component {
     @return {Object} The React button element.
   */
   _generateAddKeyButton() {
-    const title = this.state.addSource === 'manual' ? 'Add Key' : 'Add Keys';
+    const title = this.state.addSource === 'manual' ? 'Add key' : 'Add keys';
     const disabled = this.state.buttonDisabled;
-    return (<div className="right">
-      <GenericButton
-        action={this._handleAddMoreKeys.bind(this)}
-        disabled={disabled}
-        type="positive">
-        {title}
-      </GenericButton>
-    </div>);
+    return (
+      <div className="right">
+        <GenericButton
+          action={this._handleAddMoreKeys.bind(this)}
+          disabled={disabled}
+          type="positive">
+          {title}
+        </GenericButton>
+      </div>);
   }
 
   /**
@@ -397,10 +401,11 @@ class DeploymentSSHKey extends React.Component {
   */
   _generateError() {
     if (this.state.error) {
-      const content = <span><b>Error:</b> {this.state.error}</span>;
-      return (<Notification
-        content={content}
-        type="negative" />);
+      const content = (<span><b>Error:</b> {this.state.error}</span>);
+      return (
+        <Notification
+          content={content}
+          type="negative" />);
     }
     return false;
   }
@@ -439,11 +444,11 @@ class DeploymentSSHKey extends React.Component {
         <div className="twelve-col no-margin-bottom">
           <div className="three-col no-margin-bottom">
             <InsetSelect
-              ref="sshSource"
               disabled={false}
               label="Source"
               onChange={this._handleSourceChange.bind(this)}
-              options={this._generateSourceOptions()} />
+              options={this._generateSourceOptions()}
+              ref="sshSource" />
           </div>
           {this._generateAddKey()}
           {this._generateAddKeyButton()}

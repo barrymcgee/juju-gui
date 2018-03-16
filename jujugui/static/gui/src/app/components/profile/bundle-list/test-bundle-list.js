@@ -179,9 +179,10 @@ describe('Profile Bundle List', function() {
               expandedContent: (
                 <ProfileExpandedContent
                   acl={instance.props.acl}
-                  changeState={sinon.stub()}
                   addToModel={instance.props.addToModel}
+                  changeState={sinon.stub()}
                   entity={bundles[0]}
+                  generatePath={sinon.stub()}
                   getDiagramURL={sinon.stub()}
                   getModelName={instance.props.getModelName}
                   topRow={(
@@ -205,6 +206,7 @@ describe('Profile Bundle List', function() {
                         #1
                       </div>
                     </div>)} />),
+              extraData: 'logstash-core',
               key: 'cs:~lazypower/bundle/logstash-core-1'
             }, {
               columns: [{
@@ -245,9 +247,10 @@ describe('Profile Bundle List', function() {
               expandedContent: (
                 <ProfileExpandedContent
                   acl={instance.props.acl}
-                  changeState={sinon.stub()}
                   addToModel={instance.props.addToModel}
+                  changeState={sinon.stub()}
                   entity={bundles[1]}
+                  generatePath={sinon.stub()}
                   getDiagramURL={sinon.stub()}
                   getModelName={instance.props.getModelName}
                   topRow={(
@@ -271,8 +274,10 @@ describe('Profile Bundle List', function() {
                         #1
                       </div>
                     </div>)} />),
+              extraData: 'swarm-core',
               key: 'cs:~lazypower/bundle/swarm-core-1'
-            }]} />
+            }]}
+            sort={sinon.stub()} />
         </div>
       </div>);
     expect(output).toEqualJSX(expected);

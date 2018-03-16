@@ -26,8 +26,11 @@ class Charmbrowser extends React.Component {
   }
 
   componentDidMount() {
-    this.refs.charmbrowser.addEventListener(
-      'scroll', this._onScroll.bind(this));
+    // The ref cannot exist at this point in the tests.
+    if (this.refs.charmbrowser) {
+      this.refs.charmbrowser.addEventListener(
+        'scroll', this._onScroll.bind(this));
+    }
   }
 
   componentWillUnmount() {
@@ -125,12 +128,12 @@ class Charmbrowser extends React.Component {
       case 'store':
         activeChild = (
           <Store
-            changeState={changeState}
-            gisf={this.props.gisf}
-            staticURL={this.props.staticURL}
-            charmstoreURL={this.props.charmstoreURL}
             apiVersion={this.props.apiVersion}
-            setPageTitle={this.props.setPageTitle} />
+            changeState={changeState}
+            charmstoreURL={this.props.charmstoreURL}
+            gisf={this.props.gisf}
+            setPageTitle={this.props.setPageTitle}
+            staticURL={this.props.staticURL} />
         );
         break;
       case 'search-results':
@@ -138,10 +141,10 @@ class Charmbrowser extends React.Component {
         activeChild = (
           <SearchResults
             acl={this.props.acl}
-            changeState={changeState}
-            generatePath={appState.generatePath.bind(appState)}
-            charmstoreSearch={this.props.charmstoreSearch}
             addToModel={this.props.addToModel}
+            changeState={changeState}
+            charmstoreSearch={this.props.charmstoreSearch}
+            generatePath={appState.generatePath.bind(appState)}
             getName={utils.getName}
             makeEntityModel={this.props.makeEntityModel}
             owner={search.owner}
@@ -166,29 +169,31 @@ class Charmbrowser extends React.Component {
             apiUrl={this.props.apiUrl}
             changeState={changeState}
             clearLightbox={this.props.clearLightbox}
+            deployService={this.props.deployService}
             displayLightbox={this.props.displayLightbox}
-            importBundleYAML={this.props.importBundleYAML}
             flags={this.props.flags}
             getBundleYAML={this.props.getBundleYAML}
-            getEntity={this.props.getEntity}
-            deployService={this.props.deployService}
             getDiagramURL={this.props.getDiagramURL}
-            getModelName={this.props.getModelName}
+            getEntity={this.props.getEntity}
             getFile={this.props.getFile}
+            getModelName={this.props.getModelName}
             hash={currentState.hash}
-            scrollPosition={this.state.scrollPosition}
-            renderMarkdown={this.props.renderMarkdown}
             id={id}
+            importBundleYAML={this.props.importBundleYAML}
+            key={id}
+            listPlansForCharm={this.props.listPlansForCharm}
+            makeEntityModel={this.props.makeEntityModel}
             // This is used to force a component remount when the entity
             // changes, for instance a charm detail page has a link to
             // another charm detail page.
-            key={id}
             pluralize={utils.pluralize}
-            listPlansForCharm={this.props.listPlansForCharm}
-            makeEntityModel={this.props.makeEntityModel}
+            renderMarkdown={this.props.renderMarkdown}
             scrollCharmbrowser={this._scrollCharmbrowser.bind(this)}
+            scrollPosition={this.state.scrollPosition}
+            sendAnalytics={this.props.sendAnalytics}
             setPageTitle={this.props.setPageTitle}
             showTerms={this.props.showTerms}
+            staticURL={this.props.staticURL}
             urllib={this.props.urllib} />
         );
         break;
@@ -204,8 +209,8 @@ class Charmbrowser extends React.Component {
     return (
       <Panel
         clickAction={this._close.bind(this)}
-        instanceName="white-box"
         focus={false}
+        instanceName="white-box"
         visible={true}>
         <div className="charmbrowser"
           ref="charmbrowser">
@@ -239,6 +244,7 @@ Charmbrowser.propTypes = {
   listPlansForCharm: PropTypes.func.isRequired,
   makeEntityModel: PropTypes.func.isRequired,
   renderMarkdown: PropTypes.func.isRequired,
+  sendAnalytics: PropTypes.func.isRequired,
   series: PropTypes.object.isRequired,
   setPageTitle: PropTypes.func.isRequired,
   showTerms: PropTypes.func.isRequired,

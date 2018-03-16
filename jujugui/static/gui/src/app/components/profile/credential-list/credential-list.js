@@ -6,10 +6,10 @@ const React = require('react');
 const shapeup = require('shapeup');
 
 const BasicTable = require('../../basic-table/basic-table');
+const ButtonDropdown = require('../../button-dropdown/button-dropdown');
 const CredentialAddEdit = require('../../credential-add-edit/credential-add-edit');
 const ExpandingRow = require('../../expanding-row/expanding-row');
 const GenericButton = require('../../generic-button/generic-button');
-const MoreMenu = require('../../more-menu/more-menu');
 const ProfileCredentialListDelete = require('./delete/delete');
 const Spinner = require('../../spinner/spinner');
 
@@ -165,6 +165,9 @@ class ProfileCredentialList extends React.Component {
     Generate a form to add credentials.
   */
   _generateAddCredentials() {
+    // Only generate the form when we want to display it so that it gets
+    // rerendered and therefore the fields cleared between uses.
+    const form = this.state.showAdd ? this._generateCredentialForm() : null;
     return (
       <ExpandingRow
         classes={{'twelve-col': true}}
@@ -172,7 +175,7 @@ class ProfileCredentialList extends React.Component {
         expanded={this.state.showAdd}>
         <div></div>
         <div className="twelve-col">
-          {this._generateCredentialForm()}
+          {form}
         </div>
       </ExpandingRow>);
   }
@@ -235,7 +238,6 @@ class ProfileCredentialList extends React.Component {
     const credentials = this.state.credentialMap;
     return (
       <CredentialAddEdit
-        key="deployment-credential-add"
         acl={this.props.acl}
         addNotification={this.props.addNotification}
         controllerAPI={shapeup.addReshape({
@@ -247,6 +249,7 @@ class ProfileCredentialList extends React.Component {
         credentials={
           credentials ? Array.from(credentials).map(credential => credential[0]) : []}
         initUtils={this.props.initUtils}
+        key="deployment-credential-add"
         onCancel={overrides.onCancel || this._toggleAdd.bind(this)}
         onCredentialUpdated={
           overrides.onCredentialUpdated || this._onCredentialAdded.bind(this)}
@@ -314,9 +317,9 @@ class ProfileCredentialList extends React.Component {
           columnSize: 3
         }, {
           content: (
-            <MoreMenu
+            <ButtonDropdown
               icon="contextual-menu-horizontal"
-              items={[{
+              listItems={[{
                 label: 'Edit',
                 action: this._setEditCredential.bind(this, key)
               }, {

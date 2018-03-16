@@ -168,13 +168,13 @@ class CreatePaymentUser extends React.Component {
       return null;
     }
     return (
-      <div>
+      <div className="create-payment-user__card-address-form">
         <h2 className="create-payment-user__title">
           Card address
         </h2>
         <AddressForm
-          disabled={this.props.acl.isReadOnly()}
           addNotification={this.props.addNotification}
+          disabled={this.props.acl.isReadOnly()}
           getCountries={this.props.getCountries}
           ref="cardAddress"
           validateForm={this.props.validateForm} />
@@ -191,13 +191,13 @@ class CreatePaymentUser extends React.Component {
       return null;
     }
     return (
-      <div>
+      <div className="create-payment-user__billing-address-form">
         <h2 className="create-payment-user__title">
           Billing address
         </h2>
         <AddressForm
-          disabled={this.props.acl.isReadOnly()}
           addNotification={this.props.addNotification}
+          disabled={this.props.acl.isReadOnly()}
           getCountries={this.props.getCountries}
           ref="billingAddress"
           validateForm={this.props.validateForm} />

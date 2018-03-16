@@ -7,7 +7,7 @@ const shapeup = require('shapeup');
 
 const MachineViewHeader = require('./header');
 const GenericButton = require('../../generic-button/generic-button');
-const MoreMenu = require('../../more-menu/more-menu');
+const ButtonDropdown = require('../../button-dropdown/button-dropdown');
 const SvgIcon = require('../../svg-icon/svg-icon');
 
 const jsTestUtils = require('../../../utils/component-test-utils');
@@ -99,9 +99,10 @@ describe('MachineViewHeader', function() {
     const expected = (
       <div className="machine-view__header">
           Sandbox
-        <MoreMenu
+        <ButtonDropdown
           activeItem="name"
-          items={menuItems} />
+          classes={['machine-view__header-dropdown']}
+          listItems={menuItems} />
         <div className="machine-view__header-drop-target">
           <div className="machine-view__header-drop-message">
               Create new {'machine'}
@@ -121,12 +122,12 @@ describe('MachineViewHeader', function() {
         droppable={true}
         isOver={false}
         sendAnalytics={sendAnalytics}
+        title="Sandbox"
         toggle={{
           action: action,
           disabled: false,
           toggleOn: true
         }}
-        title="Sandbox"
         type="machine" />);
     const expected = (
       <div className="machine-view__header">

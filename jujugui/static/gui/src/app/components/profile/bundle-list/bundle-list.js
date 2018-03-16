@@ -101,6 +101,22 @@ class ProfileBundleList extends React.Component {
       </h2>);
   }
 
+  /**
+    Sort by the key attribute.
+    @param {Object} a The first value.
+    @param {Object} b The second value.
+    @returns {Array} The sorted array.
+  */
+  _byName(a, b) {
+    if (a.extraData < b.extraData) {
+      return -1;
+    }
+    if (a.extraData > b.extraData) {
+      return 1;
+    }
+    return 0;
+  }
+
   render() {
     let content;
     if (this.state.loading) {
@@ -175,10 +191,11 @@ class ProfileBundleList extends React.Component {
           expandedContent: (
             <ProfileExpandedContent
               acl={this.props.acl}
+              addToModel={this.props.addToModel}
               changeState={this.props.changeState}
               entity={bundle}
+              generatePath={this.props.generatePath}
               getDiagramURL={charmstore.getDiagramURL.bind(charmstore)}
-              addToModel={this.props.addToModel}
               getModelName={this.props.getModelName}
               topRow={(
                 <div>
@@ -199,6 +216,7 @@ class ProfileBundleList extends React.Component {
                     {version}
                   </div>
                 </div>)} />),
+          extraData: bundle.name,
           key: bundle.id
         };
       });
@@ -225,7 +243,8 @@ class ProfileBundleList extends React.Component {
             }]}
             rowClasses={['profile__entity-table-row']}
             rowColumnClasses={['profile__entity-table-column']}
-            rows={rows} />
+            rows={rows}
+            sort={this._byName.bind(this)} />
         </div>);
     }
     return (
