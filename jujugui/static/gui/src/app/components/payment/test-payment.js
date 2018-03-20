@@ -171,12 +171,14 @@ describe('Payment', function() {
             Payment details
           </h2>
           <div className="payment__no-user">
-            You are not set up to make payments.
-            <GenericButton
-              action={instance._toggleAdd}
-              type="inline-neutral">
-              Set up payments
-            </GenericButton>
+            <p>You are not set up to make payments.</p>
+            <p>
+              <GenericButton
+                action={instance._toggleAdd}
+                type="inline-positive">
+                Set up payments
+              </GenericButton>
+            </p>
           </div>
         </div>
       </div>);

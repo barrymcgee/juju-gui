@@ -7,6 +7,10 @@
 
   &__section {
     margin-bottom: 40px;
+
+    h4 {
+      max-width: 475px;
+    }
   }
 
   &__title {
@@ -20,7 +24,7 @@
   .create-payment-user__title {
     font-size: 1rem;
     font-weight: 400;
-    margin: 1.5rem 0 1rem 0;
+    margin: 0 0 1rem 0;
   }
 
   .inset-select,
@@ -39,5 +43,13 @@
   [type="radio"]:checked:after {
     position: relative !important;
     bottom: 3px;
+  }
+
+  .payment-details-fields {
+    margin-bottom: 2rem;
+  }
+
+  .user-profile__list {
+    margin-left: 0;
   }
 }

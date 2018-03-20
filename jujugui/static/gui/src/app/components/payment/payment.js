@@ -178,12 +178,14 @@ class Payment extends React.Component {
           Payment details
         </h2>
         <div className="payment__no-user">
-          You are not set up to make payments.
-          <GenericButton
-            action={this._toggleAdd.bind(this)}
-            type="inline-neutral">
-            Set up payments
-          </GenericButton>
+          <p>You are not set up to make payments.</p>
+          <p>
+            <GenericButton
+              action={this._toggleAdd.bind(this)}
+              type="inline-positive">
+              Set up payments
+            </GenericButton>
+          </p>
         </div>
       </div>);
   }
