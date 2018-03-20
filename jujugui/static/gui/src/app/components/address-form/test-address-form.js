@@ -114,8 +114,8 @@ describe('AddressForm', function() {
               error: 'This field is required.'
             }]}
             value={undefined} />
-          <div className="twelve-col u-no-margin--bottom">
-            <div className="six-col u-no-margin--bottom">
+          <div className="twelve-col">
+            <div className="six-col">
               <GenericInput
                 disabled={false}
                 label="Town/city"
@@ -127,7 +127,7 @@ describe('AddressForm', function() {
                 }]}
                 value={undefined} />
             </div>
-            <div className="six-col last-col u-no-margin--bottom">
+            <div className="six-col last-col">
               <GenericInput
                 disabled={false}
                 label="Postcode"
@@ -139,18 +139,18 @@ describe('AddressForm', function() {
                 }]}
                 value={undefined} />
             </div>
-          </div>
-          <div className="twelve-col u-no-margin--bottom">
-            <GenericInput
-              disabled={false}
-              label="Phone number"
-              ref="phoneNumber"
-              required={true}
-              validate={[{
-                regex: /\S+/,
-                error: 'This field is required.'
-              }]}
-              value="" />
+            <div className="twelve-col">
+              <GenericInput
+                disabled={false}
+                label="Phone number"
+                ref="phoneNumber"
+                required={true}
+                validate={[{
+                  regex: /\S+/,
+                  error: 'This field is required.'
+                }]}
+                value="" />
+            </div>
           </div>
         </div>
       </div>);
@@ -158,85 +158,12 @@ describe('AddressForm', function() {
   });
 
   it('can display the form without some fields', function() {
-    const renderer = jsTestUtils.shallowRender(
-      <AddressForm
-        addNotification={sinon.stub()}
-        disabled={false}
-        getCountries={getCountries}
-        showName={false}
-        showPhone={false}
-        validateForm={sinon.stub()} />, true);
-    const output = renderer.getRenderOutput();
-    const expected = (
-      <div className="address-form">
-        <div>
-          <InsetSelect
-            disabled={false}
-            label="Country"
-            options={[{
-              label: 'Australia',
-              value: 'AU'
-            }]}
-            ref="country"
-            value="GB" />
-          {null}
-          <GenericInput
-            disabled={false}
-            label="Address line 1"
-            ref="line1"
-            required={true}
-            validate={[{
-              regex: /\S+/,
-              error: 'This field is required.'
-            }]}
-            value={undefined} />
-          <GenericInput
-            disabled={false}
-            label="Address line 2 (optional)"
-            ref="line2"
-            required={false}
-            value={undefined} />
-          <GenericInput
-            disabled={false}
-            label="State/province"
-            ref="state"
-            required={true}
-            validate={[{
-              regex: /\S+/,
-              error: 'This field is required.'
-            }]}
-            value={undefined} />
-          <div className="twelve-col u-no-margin--bottom">
-            <div className="six-col u-no-margin--bottom">
-              <GenericInput
-                disabled={false}
-                label="Town/city"
-                ref="city"
-                required={true}
-                validate={[{
-                  regex: /\S+/,
-                  error: 'This field is required.'
-                }]}
-                value={undefined} />
-            </div>
-            <div className="six-col last-col u-no-margin--bottom">
-              <GenericInput
-                disabled={false}
-                label="Postcode"
-                ref="postcode"
-                required={true}
-                validate={[{
-                  regex: /\S+/,
-                  error: 'This field is required.'
-                }]}
-                value={undefined} />
-            </div>
-            {null}
-          </div>
-        </div>
-      </div>);
-    expect(output).toEqualJSX(expected);
-
+    const wrapper = renderComponent({
+      showName: false,
+      showPhone: false
+    });
+    assert.equal(wrapper.find('[label="Full name"]').length, 0);
+    assert.equal(wrapper.find('[label="Phone number"]').length, 0);
   });
 
   it('can validate the form', function() {

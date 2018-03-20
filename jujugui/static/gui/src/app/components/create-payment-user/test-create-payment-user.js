@@ -71,8 +71,18 @@ describe('CreatePaymentUser', function() {
           <div className="create-payment-user__form-content">
             <ul className="create-payment-user__form-type">
               <li className="create-payment-user__form-type-option">
-                <label htmlFor="personal">
+                <label htmlFor="business">
                   <input checked={true}
+                    id="business"
+                    name="formType"
+                    onChange={options.at(1).prop('onChange')}
+                    type="radio" />
+                    Business use
+                </label>
+              </li>
+              <li className="create-payment-user__form-type-option">
+                <label htmlFor="personal">
+                  <input checked={false}
                     id="personal"
                     name="formType"
                     onChange={options.at(0).prop('onChange')}
@@ -80,20 +90,10 @@ describe('CreatePaymentUser', function() {
                   Personal use
                 </label>
               </li>
-              <li className="create-payment-user__form-type-option">
-                <label htmlFor="business">
-                  <input checked={false}
-                    id="business"
-                    name="formType"
-                    onChange={options.at(1).prop('onChange')}
-                    type="radio" />
-                  Business use
-                </label>
-              </li>
             </ul>
             {null}
             <h2 className="create-payment-user__title">
-              Name and address
+              Your contact details
             </h2>
             {null}
             <GenericInput
@@ -144,7 +144,7 @@ describe('CreatePaymentUser', function() {
             <GenericButton
               action={wrapper.find('GenericButton').prop('action')}
               disabled={false}
-              type="inline-neutral">
+              type="inline-positive">
               Add payment details
             </GenericButton>
           </div>
