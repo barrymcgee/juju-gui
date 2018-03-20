@@ -158,7 +158,6 @@ describe('AddressForm', function() {
   });
 
   it('can display the form without some fields', function() {
-<<<<<<< HEAD
     const renderer = jsTestUtils.shallowRender(
       <AddressForm
         addNotification={sinon.stub()}
@@ -237,14 +236,7 @@ describe('AddressForm', function() {
         </div>
       </div>);
     expect(output).toEqualJSX(expected);
-=======
-    const wrapper = renderComponent({
-      showName: false,
-      showPhone: false
-    });
-    assert.equal(wrapper.find('[label="Full name"]').length, 0);
-    assert.equal(wrapper.find('[label="Phone number"]').length, 0);
->>>>>>> develop
+
   });
 
   it('can validate the form', function() {
