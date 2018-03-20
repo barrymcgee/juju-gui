@@ -70,7 +70,7 @@ describe('PaymentDetailsAddress', () => {
           address={address}
           disabled={true}
           getCountries={getCountries} />
-        <div className="twelve-col payment-details-address__edit">
+        <div className="twelve-col payment-details-address__edit u-no-padding-bottom">
           <AddressForm
             addNotification={addNotification}
             address={address}
@@ -79,7 +79,7 @@ describe('PaymentDetailsAddress', () => {
             ref="addressForm"
             validateForm={validateForm} />
           <div className={
-            'twelve-col payment-details-address__buttons'}>
+            'twelve-col payment-details-address__buttons u-no-margin--bottom'}>
             <GenericButton
               action={close}
               disabled={false}

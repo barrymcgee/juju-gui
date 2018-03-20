@@ -81,15 +81,15 @@ class PaymentMethodCard extends React.Component {
       return null;
     }
     return (
-      <div className="four-col last-col payment-card-actions no-margin-bottom">
+      <div className="payment-card-actions no-margin-bottom">
         <GenericButton
           action={this.props.updatePaymentMethod}
           type="inline-neutral">
-          Update payment details
+          Update payment
         </GenericButton>
         <GenericButton
           action={this._removePaymentMethod.bind(this)}
-          type="inline-negative">
+          type="inline-neutral">
           Remove payment details
         </GenericButton>
       </div>);
@@ -105,7 +105,7 @@ class PaymentMethodCard extends React.Component {
     const line2 = address.line2 ? (<p>{address.line2}</p>) : null;
     return (
       <div className="payment-card">
-        <div className="eight-col no-margin-bottom">
+        <div className="five-col">
           <div className={cardClasses}
             onClick={this._handleCardClick.bind(this)}>
             <div className="payment-card-container">
@@ -131,6 +131,8 @@ class PaymentMethodCard extends React.Component {
               </div>
             </div>
           </div>
+        </div>
+        <div className="seven-col last-col">
           <div className="payment-card-info">
             <h4>Card address</h4>
             <p>{address.line1}</p>
@@ -138,8 +140,8 @@ class PaymentMethodCard extends React.Component {
             <p>{address.city} {address.state}</p>
             <p>{address.country} {address.postcode}</p>
           </div>
+          {this._generateActions()}
         </div>
-        {this._generateActions()}
       </div>);
   }
 };
