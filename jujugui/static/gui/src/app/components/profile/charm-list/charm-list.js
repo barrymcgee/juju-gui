@@ -136,12 +136,13 @@ class ProfileCharmList extends React.Component {
   */
   _generateTitle() {
     return (
-      <h2 className="profile__title">
-        {this.props.isActiveUsersProfile ? 'My' : 'Their'} charms
-        <span className="profile__title-count">
-          ({(this.state.data || []).length})
-        </span>
-      </h2>);
+      <div className="v1">
+        <h2 className="profile__title">
+          {this.props.isActiveUsersProfile ? 'My' : 'Their'} charms
+          <span className="profile__title-count">({(this.state.data || []).length})</span>
+        </h2>
+      </div>
+    );
   }
 
   /**
@@ -177,7 +178,7 @@ class ProfileCharmList extends React.Component {
             type="charms" />);
       } else {
         content = (
-          <div>
+          <div class="v1">
             {this._generateTitle()}
             <p className="profile-charm-list__onboarding">
               Learn about&nbsp;
