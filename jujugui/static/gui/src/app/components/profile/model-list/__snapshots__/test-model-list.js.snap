@@ -27,16 +27,7 @@ exports[`Profile Model List can render 1`] = `
     </h2>
   </div>
   <BasicTable
-    headerClasses={
-      Array [
-        "profile__entity-table-header-row",
-      ]
-    }
-    headerColumnClasses={
-      Array [
-        "profile__entity-table-header-column",
-      ]
-    }
+    headerClasses={Array []}
     headers={
       Array [
         Object {
@@ -65,16 +56,7 @@ exports[`Profile Model List can render 1`] = `
         },
       ]
     }
-    rowClasses={
-      Array [
-        "profile__entity-table-row",
-      ]
-    }
-    rowColumnClasses={
-      Array [
-        "profile__entity-table-column",
-      ]
-    }
+    rowClasses={Array []}
     rows={
       Array [
         Object {
@@ -94,7 +76,7 @@ exports[`Profile Model List can render 1`] = `
             },
             Object {
               "columnSize": 3,
-              "content": <div>
+              "content": <React.Fragment>
                 <span
                   className="profile-model-list__machine-number"
                 >
@@ -102,7 +84,7 @@ exports[`Profile Model List can render 1`] = `
                 </span>
                 aws
                 /eu-west-1
-              </div>,
+              </React.Fragment>,
             },
             Object {
               "columnSize": 1,
@@ -146,28 +128,20 @@ exports[`Profile Model List can render 1`] = `
               </a>,
             },
           ],
-          "expandedContent": <div
-            className="profile-model-list__expanded-content"
-          >
-            <div
-              className="three-col"
-            >
+          "expandedContent": <React.Fragment>
+            <td>
               <a
                 href="/gui/u/tester/mymodel"
                 onClick={[Function]}
               >
                 mymodel
               </a>
-            </div>
-            <div
-              className="two-col"
-            >
+            </td>
+            <td>
               Me
-            </div>
-            <div
-              className="three-col"
-            >
-              <div>
+            </td>
+            <td>
+              <React.Fragment>
                 <span
                   className="profile-model-list__machine-number"
                 >
@@ -175,11 +149,19 @@ exports[`Profile Model List can render 1`] = `
                 </span>
                 aws
                 /eu-west-1
-              </div>
-            </div>
-            <div
-              className="one-col"
-            >
+              </React.Fragment>
+              <td>
+                <a
+                  className="link"
+                  onClick={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  base
+                </a>
+              </td>
+            </td>
+            <td>
               <div
                 className="profile-model-list__access tooltip"
               >
@@ -197,17 +179,15 @@ exports[`Profile Model List can render 1`] = `
                   size="16"
                 />
               </div>
-            </div>
-            <div
-              className="two-col"
-            >
+            </td>
+            <td>
               <DateDisplay
                 date="2017-07-06T14:47:03.000Z"
                 relative={true}
               />
-            </div>
-            <div
-              className="one-col last-col u-text-align--right"
+            </td>
+            <td
+              className="u-align-text--right"
             >
               <a
                 onClick={[Function]}
@@ -217,20 +197,8 @@ exports[`Profile Model List can render 1`] = `
                   size="16"
                 />
               </a>
-            </div>
-            <div
-              className="three-col prepend-five profile-model-list__credential-name"
-            >
-              <span
-                className="link"
-                onClick={[Function]}
-                role="button"
-                tabIndex="0"
-              >
-                base
-              </span>
-            </div>
-          </div>,
+            </td>
+          </React.Fragment>,
           "key": "mymodel",
         },
         Object {
@@ -250,7 +218,7 @@ exports[`Profile Model List can render 1`] = `
             },
             Object {
               "columnSize": 3,
-              "content": <div>
+              "content": <React.Fragment>
                 <span
                   className="profile-model-list__machine-number"
                 >
@@ -258,7 +226,7 @@ exports[`Profile Model List can render 1`] = `
                 </span>
                 google
                 /us-central1
-              </div>,
+              </React.Fragment>,
             },
             Object {
               "columnSize": 1,
@@ -302,28 +270,20 @@ exports[`Profile Model List can render 1`] = `
               </a>,
             },
           ],
-          "expandedContent": <div
-            className="profile-model-list__expanded-content"
-          >
-            <div
-              className="three-col"
-            >
+          "expandedContent": <React.Fragment>
+            <td>
               <a
                 href="/gui/u/tester/mymodel2"
                 onClick={[Function]}
               >
                 mymodel2
               </a>
-            </div>
-            <div
-              className="two-col"
-            >
+            </td>
+            <td>
               Me
-            </div>
-            <div
-              className="three-col"
-            >
-              <div>
+            </td>
+            <td>
+              <React.Fragment>
                 <span
                   className="profile-model-list__machine-number"
                 >
@@ -331,11 +291,19 @@ exports[`Profile Model List can render 1`] = `
                 </span>
                 google
                 /us-central1
-              </div>
-            </div>
-            <div
-              className="one-col"
-            >
+              </React.Fragment>
+              <td>
+                <a
+                  className="link"
+                  onClick={[Function]}
+                  role="button"
+                  tabIndex="0"
+                >
+                  admin
+                </a>
+              </td>
+            </td>
+            <td>
               <div
                 className="profile-model-list__access tooltip"
               >
@@ -353,17 +321,15 @@ exports[`Profile Model List can render 1`] = `
                   size="16"
                 />
               </div>
-            </div>
-            <div
-              className="two-col"
-            >
+            </td>
+            <td>
               <DateDisplay
                 date="2017-07-06T16:26:47.000Z"
                 relative={true}
               />
-            </div>
-            <div
-              className="one-col last-col u-text-align--right"
+            </td>
+            <td
+              className="u-align-text--right"
             >
               <a
                 onClick={[Function]}
@@ -373,20 +339,8 @@ exports[`Profile Model List can render 1`] = `
                   size="16"
                 />
               </a>
-            </div>
-            <div
-              className="three-col prepend-five profile-model-list__credential-name"
-            >
-              <span
-                className="link"
-                onClick={[Function]}
-                role="button"
-                tabIndex="0"
-              >
-                admin
-              </span>
-            </div>
-          </div>,
+            </td>
+          </React.Fragment>,
           "key": "mymodel2",
         },
         Object {
@@ -406,7 +360,7 @@ exports[`Profile Model List can render 1`] = `
             },
             Object {
               "columnSize": 3,
-              "content": <div>
+              "content": <React.Fragment>
                 <span
                   className="profile-model-list__machine-number"
                 >
@@ -414,7 +368,7 @@ exports[`Profile Model List can render 1`] = `
                 </span>
                 google
                 /us-east1
-              </div>,
+              </React.Fragment>,
             },
             Object {
               "columnSize": 1,
@@ -451,28 +405,20 @@ exports[`Profile Model List can render 1`] = `
               "content": null,
             },
           ],
-          "expandedContent": <div
-            className="profile-model-list__expanded-content"
-          >
-            <div
-              className="three-col"
-            >
+          "expandedContent": <React.Fragment>
+            <td>
               <a
                 href="/gui/u/tester2/test-db"
                 onClick={[Function]}
               >
                 test-db
               </a>
-            </div>
-            <div
-              className="two-col"
-            >
+            </td>
+            <td>
               tester2
-            </div>
-            <div
-              className="three-col"
-            >
-              <div>
+            </td>
+            <td>
+              <React.Fragment>
                 <span
                   className="profile-model-list__machine-number"
                 >
@@ -480,11 +426,14 @@ exports[`Profile Model List can render 1`] = `
                 </span>
                 google
                 /us-east1
-              </div>
-            </div>
-            <div
-              className="one-col"
-            >
+              </React.Fragment>
+              <p
+                className="col-12"
+              >
+                No additional information available on shared model.
+              </p>
+            </td>
+            <td>
               <div
                 className="profile-model-list__access tooltip"
               >
@@ -502,24 +451,17 @@ exports[`Profile Model List can render 1`] = `
                   size="16"
                 />
               </div>
-            </div>
-            <div
-              className="two-col"
-            >
+            </td>
+            <td>
               <DateDisplay
                 date="--"
                 relative={true}
               />
-            </div>
-            <div
-              className="one-col last-col u-text-align--right"
+            </td>
+            <td
+              className="u-align-text--right"
             />
-            <div
-              className="twelve-col"
-            >
-              No additional information available on shared model.
-            </div>
-          </div>,
+          </React.Fragment>,
           "key": "test-db",
         },
         Object {
@@ -539,7 +481,7 @@ exports[`Profile Model List can render 1`] = `
             },
             Object {
               "columnSize": 3,
-              "content": <div>
+              "content": <React.Fragment>
                 <span
                   className="profile-model-list__machine-number"
                 >
@@ -547,7 +489,7 @@ exports[`Profile Model List can render 1`] = `
                 </span>
                 google
                 /us-east1
-              </div>,
+              </React.Fragment>,
             },
             Object {
               "columnSize": 1,
@@ -591,28 +533,20 @@ exports[`Profile Model List can render 1`] = `
               </a>,
             },
           ],
-          "expandedContent": <div
-            className="profile-model-list__expanded-content"
-          >
-            <div
-              className="three-col"
-            >
+          "expandedContent": <React.Fragment>
+            <td>
               <a
                 href="/gui/u/tester3/website"
                 onClick={[Function]}
               >
                 website
               </a>
-            </div>
-            <div
-              className="two-col"
-            >
+            </td>
+            <td>
               tester3
-            </div>
-            <div
-              className="three-col"
-            >
-              <div>
+            </td>
+            <td>
+              <React.Fragment>
                 <span
                   className="profile-model-list__machine-number"
                 >
@@ -620,11 +554,14 @@ exports[`Profile Model List can render 1`] = `
                 </span>
                 google
                 /us-east1
-              </div>
-            </div>
-            <div
-              className="one-col"
-            >
+              </React.Fragment>
+              <p
+                className="col-12"
+              >
+                No additional information available on shared model.
+              </p>
+            </td>
+            <td>
               <div
                 className="profile-model-list__access tooltip"
               >
@@ -642,17 +579,15 @@ exports[`Profile Model List can render 1`] = `
                   size="16"
                 />
               </div>
-            </div>
-            <div
-              className="two-col"
-            >
+            </td>
+            <td>
               <DateDisplay
                 date="2017-07-05T01:42:05.000Z"
                 relative={true}
               />
-            </div>
-            <div
-              className="one-col last-col u-text-align--right"
+            </td>
+            <td
+              className="u-align-text--right"
             >
               <a
                 onClick={[Function]}
@@ -662,13 +597,8 @@ exports[`Profile Model List can render 1`] = `
                   size="16"
                 />
               </a>
-            </div>
-            <div
-              className="twelve-col"
-            >
-              No additional information available on shared model.
-            </div>
-          </div>,
+            </td>
+          </React.Fragment>,
           "key": "website",
         },
       ]
