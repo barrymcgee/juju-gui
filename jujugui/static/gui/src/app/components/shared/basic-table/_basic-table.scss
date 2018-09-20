@@ -3,12 +3,13 @@
   margin-bottom: 20px;
 
   &__header {
+    border-bottom: 1px solid $color-mid-light;
     font-weight: 400;
-    border-bottom: 1px solid $color-dark;
   }
 
   &__row {
-    border-bottom: 1px solid $light-mid-grey;
+    border-bottom: 0;
+    transition: all 0.25s;
 
     &-link {
       position: absolute;
@@ -23,5 +24,19 @@
     &--clickable {
       cursor: pointer;
     }
+
+    &.is-expanded {
+      background: $color-x-light;
+      margin: 1rem 0;
+      padding: .25rem;
+    }
+
+    &:first-child.is-expanded {
+      border-top: 1px solid $color-mid-light;
+    }
+  }
+
+  tbody tr:hover {
+    background-color: $color-x-light;
   }
 }

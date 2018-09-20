@@ -113,15 +113,13 @@ class BasicTableRow extends React.Component {
 
   render() {
     const {expandedContent, isHeader} = this.props;
-    const classes = classNames(
-      'twelve-col',
-      this.props.classes,
-      {
-        'basic-table__header': isHeader,
-        'basic-table__row': !isHeader,
-        'basic-table__row--expandable': !!expandedContent,
-        'basic-table__row--clickable': this._isRowClickable()
-      });
+    const classes = classNames(this.props.classes, {
+      'basic-table__header': isHeader,
+      'basic-table__row': !isHeader,
+      'basic-table__row--expandable': !!expandedContent,
+      'basic-table__row--clickable': this._isRowClickable(),
+      'is-expanded': this.state.expanded
+    });
     const onClick = this._isRowClickable() ? this._toggleExpanded.bind(this) : null;
     return (
       <li

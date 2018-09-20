@@ -163,128 +163,121 @@ class ProfileModelList extends React.Component {
     ]);
     const profileUsername = this.props.userInfo.profile;
     const models = this.state.models || [];
-    return models.reduce((modelList, model, index) => {
-      // Keep only the models that aren't currently in the destroy cycle.
-      if (!model.isAlive) {
-        return modelList;
-      }
-      // It is possible that the user is a superuser with no models but has
-      // access to all of the models. In which case the user objects for the
-      // model will not list their user name and the profileUser will be
-      // undefined.
-      const profileUser = model.users.find(user => user.displayName === profileUsername);
-      if (profileUser === undefined) {
-        return modelList;
-      }
-      const bdRef = `mymodel-button-dropdown-${index}`;
-      const owner = model.owner.replace('@external', '') || profileUsername;
-      const path = `${this.props.baseURL}u/${owner}/${model.name}`;
-      const userIsAdmin = profileUser.access === 'admin';
-      const username = owner === profileUsername ? 'Me' : owner;
-      const region = model.region ? '/' + model.region : '';
-      const nameContent = (
-        <a
-          href={path}
-          onClick={this.switchToModel.bind(this, {
-            name: model.name,
-            id: model.id,
-            owner
-          })}>
-          {model.name}
-        </a>);
-      const regionContent = (
-        <div>
-          <span className="profile-model-list__machine-number">
-            {model.numMachines}
-          </span>
-          {model.cloud || model.provider}{region}
-        </div>);
-      const accessContent = (
-        <div className="profile-model-list__access tooltip">
-          <span className="tooltip__tooltip">
-            <span className="tooltip__inner tooltip__inner--down">
-              {profileUser.access}
+    return (
+      models.reduce((modelList, model, index) => {
+        // Keep only the models that aren't currently in the destroy cycle.
+        if (!model.isAlive) {
+          return modelList;
+        }
+        // It is possible that the user is a superuser with no models but has
+        // access to all of the models. In which case the user objects for the
+        // model will not list their user name and the profileUser will be
+        // undefined.
+        const profileUser = model.users.find(user => user.displayName === profileUsername);
+        if (profileUser === undefined) {
+          return modelList;
+        }
+        const bdRef = `mymodel-button-dropdown-${index}`;
+        const owner = model.owner.replace('@external', '') || profileUsername;
+        const path = `${this.props.baseURL}u/${owner}/${model.name}`;
+        const userIsAdmin = profileUser.access === 'admin';
+        const username = owner === profileUsername ? 'Me' : owner;
+        const region = model.region ? '/' + model.region : '';
+        const nameContent = (
+          <a
+            href={path}
+            onClick={this.switchToModel.bind(this, {
+              name: model.name,
+              id: model.id,
+              owner
+            })}>
+            {model.name}
+          </a>
+        );
+        const regionContent = (
+          <React.Fragment>
+            <span className="profile-model-list__machine-number">{model.numMachines}</span>
+            {model.cloud || model.provider}
+            {region}
+          </React.Fragment>
+        );
+        const accessContent = (
+          <div className="profile-model-list__access tooltip">
+            <span className="tooltip__tooltip">
+              <span className="tooltip__inner tooltip__inner--down">{profileUser.access}</span>
             </span>
-          </span>
-          <SvgIcon
-            name={icons.get(profileUser.access)}
-            size="16" />
-        </div>);
-      const dateContent = (
-        <DateDisplay
-          date={model.lastConnection || '--'}
-          relative={true} />);
-      const destroyContent = userIsAdmin && !model.isController ? (
-        <a onClick={this._destroyModel.bind(this, model, bdRef)}>
-          <SvgIcon
-            name="delete_16"
-            size="16" />
-        </a>) : null;
-      let expandedContent;
-      if (owner === profileUsername) {
-        expandedContent = (
-          <div className="three-col prepend-five profile-model-list__credential-name">
-            <span
-              className="link"
-              onClick={this._handleCredentialClick.bind(this, model.credential)}
-              role="button"
-              tabIndex="0">
-              {model.credentialName}
-            </span>
-          </div>);
-      } else {
-        expandedContent = (
-          <div className="twelve-col">
-            No additional information available on shared model.
-          </div>);
-      }
-      modelList.push({
-        columns: [{
-          content: nameContent,
-          columnSize: 3
-        }, {
-          content: username,
-          columnSize: 2
-        }, {
-          content: regionContent,
-          columnSize: 3
-        }, {
-          content: accessContent,
-          columnSize: 1
-        }, {
-          content: dateContent,
-          columnSize: 2
-        }, {
-          content: destroyContent,
-          columnSize: 1,
-          classes: ['u-text-align--right']
-        }],
-        expandedContent: (
-          <div className="profile-model-list__expanded-content">
-            <div className="three-col">
-              {nameContent}
-            </div>
-            <div className="two-col">
-              {username}
-            </div>
-            <div className="three-col">
-              {regionContent}
-            </div>
-            <div className="one-col">
-              {accessContent}
-            </div>
-            <div className="two-col">
-              {dateContent}
-            </div>
-            <div className="one-col last-col u-text-align--right">
-              {destroyContent}
-            </div>
-            {expandedContent}
-          </div>),
-        key: model.name
-      });
-      return modelList;
-    }, []) || [];
+            <SvgIcon name={icons.get(profileUser.access)}
+              size="16" />
+          </div>
+        );
+        const dateContent = (
+          <DateDisplay date={model.lastConnection || '--'}
+            relative={true} />
+        );
+        const destroyContent =
+          userIsAdmin && !model.isController ? (
+            <a onClick={this._destroyModel.bind(this, model, bdRef)}>
+              <SvgIcon name="delete_16"
+                size="16" />
+            </a>
+          ) : null;
+        let expandedContent;
+        if (owner === profileUsername) {
+          expandedContent = (
+            <td>
+              <a
+                className="link"
+                onClick={this._handleCredentialClick.bind(this, model.credential)}
+                role="button"
+                tabIndex="0">
+                {model.credentialName}
+              </a>
+            </td>
+          );
+        } else {
+          expandedContent = (
+            <p className="col-12">No additional information available on shared model.</p>
+          );
+        }
+        modelList.push({
+          columns: [
+            {
+              content: nameContent
+            },
+            {
+              content: username
+            },
+            {
+              content: regionContent
+            },
+            {
+              content: accessContent
+            },
+            {
+              content: dateContent
+            },
+            {
+              content: destroyContent
+            }
+          ],
+          expandedContent: (
+            <React.Fragment>
+              <td>{nameContent}</td>
+              <td>{username}</td>
+              <td>
+                {regionContent}
+                {expandedContent}
+              </td>
+              <td>{accessContent}</td>
+              <td>{dateContent}</td>
+              <td>{destroyContent}</td>
+            </React.Fragment>
+          ),
+          key: model.name
+        });
+        return modelList;
+      }, []) || []
+    );
   }
 
   /**
@@ -323,16 +316,16 @@ class ProfileModelList extends React.Component {
     return (
       <div className="profile-model-list">
         <div className="profile-model-list__header v1">
-          <CreateModelButton
-            changeState={this.props.changeState}
-            switchModel={this.props.switchModel}
-            title="Start a new model" />
           <h2 className="profile__title">
             My models
             <span className="profile__title-count">
               ({rowData.length})
             </span>
           </h2>
+          <CreateModelButton
+            changeState={this.props.changeState}
+            switchModel={this.props.switchModel}
+            title="Start a new model" />
         </div>
         {!rowData.length ? null : <BasicTable
           headerClasses={['profile__entity-table-header-row']}
