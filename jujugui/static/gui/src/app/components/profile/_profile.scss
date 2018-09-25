@@ -1,61 +1,12 @@
 .profile {
+
   &__content {
-    display: grid;
-    grid-template-columns: 238px 1fr;
-  }
 
-  a,
-  .link {
-    color: $link-color;
-    font-weight: 200;
-  }
-
-  .profile__title {
-    margin-bottom: 1.55rem;
-
-    &-count {
-      margin-left: 0.25em;
-      color: $warm-grey;
-    }
-  }
-
-  &__entity-table {
-    &-header-row,
-    &-row {
-      margin-bottom: 0;
-    }
-
-    &-header-row {
-      padding-bottom: 12px;
-    }
-
-    &-row {
-      padding: 12px 0;
-
-      &.basic-table__row--clickable {
-        &:hover {
-          background-color: #fff;
-        }
-
-        &.expanding-row--expanded {
-          &:hover {
-            background: none;
-          }
-        }
-      }
-
-      & > .expanding-row__expanded {
-        margin: 0;
-      }
-
-      & > .expanding-row--expanded .expanding-row__expanded {
-        margin: 12px 0;
-      }
-    }
-
-    &-header-column,
-    &-column {
-      margin-bottom: 0;
+    @media (min-width: $breakpoint-medium) {
+      display: grid;
+      grid-template-columns: 200px 1fr;
     }
   }
 }
+
+

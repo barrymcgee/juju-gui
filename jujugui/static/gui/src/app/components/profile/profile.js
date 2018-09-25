@@ -16,6 +16,7 @@ const ProfileInvoiceList = require('./invoice-list/invoice-list');
 const Invoice = require('../invoice/invoice');
 const Panel = require('../shared/panel/panel');
 const RevenueStatement = require('../revenue-statement/revenue-statement');
+const Link = require('../link/link');
 
 /** Profile React component used to display user details. */
 class Profile extends React.Component {
@@ -42,6 +43,60 @@ class Profile extends React.Component {
       active: parts[0],
       sub: parts.length > 1 ? parts.slice(1, parts.length).join('/') : null
     };
+  }
+
+  /**
+  Handle deploying an entity.
+  @param entityId {String} A charm or bundle id.
+  */
+  _handleDeploy(entityId, props) {
+    props.addToModel(entityId);
+    props.changeState({
+      hash: null,
+      profile: null
+    });
+  }
+
+  /**
+    Generate a list of permissions.
+    @param permissions {Array} The list of permissions.
+    @returns {Object} The list as JSX.
+  */
+  _generatePermissions(permissions, props) {
+    let items = permissions.map((username, i) => {
+      let content;
+      if (username === 'everyone') {
+        content = username;
+      } else {
+        content = (
+          <Link
+            changeState={props.changeState}
+            clickState={{
+              hash: null,
+              profile: username
+            }}
+            generatePath={props.generatePath}
+          >
+            {username}
+          </Link>);
+      }
+      return (
+        <span
+          key={username + i}>
+          {content}
+        </span>);
+    });
+    if (items.length === 0) {
+      items = (
+        <span
+          key="none">
+          None
+        </span>);
+    }
+    return (
+      <span>
+        {items}
+      </span>);
   }
 
   render() {
@@ -107,7 +162,9 @@ class Profile extends React.Component {
             getModelName={props.getModelName}
             isActiveUsersProfile={isActiveUsersProfile}
             storeUser={props.storeUser}
-            user={props.userInfo.external} />
+            user={props.userInfo.external}
+            handleDeploy={this._handleDeploy}
+            generatePermissions={this._generatePermissions} />
         );
       }
     });

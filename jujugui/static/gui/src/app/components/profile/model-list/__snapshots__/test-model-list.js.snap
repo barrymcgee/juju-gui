@@ -7,12 +7,6 @@ exports[`Profile Model List can render 1`] = `
   <div
     className="profile-model-list__header v1"
   >
-    <CreateModelButton
-      changeState={[Function]}
-      switchModel={[Function]}
-      title="Start a new model"
-      type="inline-neutral"
-    />
     <h2
       className="profile__title"
     >
@@ -25,6 +19,12 @@ exports[`Profile Model List can render 1`] = `
         )
       </span>
     </h2>
+    <CreateModelButton
+      changeState={[Function]}
+      switchModel={[Function]}
+      title="Start a new model"
+      type="inline-neutral"
+    />
   </div>
   <BasicTable
     headerClasses={Array []}
@@ -62,7 +62,6 @@ exports[`Profile Model List can render 1`] = `
         Object {
           "columns": Array [
             Object {
-              "columnSize": 3,
               "content": <a
                 href="/gui/u/tester/mymodel"
                 onClick={[Function]}
@@ -71,11 +70,9 @@ exports[`Profile Model List can render 1`] = `
               </a>,
             },
             Object {
-              "columnSize": 2,
               "content": "Me",
             },
             Object {
-              "columnSize": 3,
               "content": <React.Fragment>
                 <span
                   className="profile-model-list__machine-number"
@@ -87,8 +84,7 @@ exports[`Profile Model List can render 1`] = `
               </React.Fragment>,
             },
             Object {
-              "columnSize": 1,
-              "content": <div
+              "content": <span
                 className="profile-model-list__access tooltip"
               >
                 <span
@@ -104,20 +100,15 @@ exports[`Profile Model List can render 1`] = `
                   name="user_16"
                   size="16"
                 />
-              </div>,
+              </span>,
             },
             Object {
-              "columnSize": 2,
               "content": <DateDisplay
                 date="2017-07-06T14:47:03.000Z"
                 relative={true}
               />,
             },
             Object {
-              "classes": Array [
-                "u-text-align--right",
-              ],
-              "columnSize": 1,
               "content": <a
                 onClick={[Function]}
               >
@@ -150,19 +141,17 @@ exports[`Profile Model List can render 1`] = `
                 aws
                 /eu-west-1
               </React.Fragment>
-              <td>
-                <a
-                  className="link"
-                  onClick={[Function]}
-                  role="button"
-                  tabIndex="0"
-                >
-                  base
-                </a>
-              </td>
+              <a
+                className="profile-model-list__link"
+                onClick={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                base
+              </a>
             </td>
             <td>
-              <div
+              <span
                 className="profile-model-list__access tooltip"
               >
                 <span
@@ -178,7 +167,7 @@ exports[`Profile Model List can render 1`] = `
                   name="user_16"
                   size="16"
                 />
-              </div>
+              </span>
             </td>
             <td>
               <DateDisplay
@@ -186,9 +175,7 @@ exports[`Profile Model List can render 1`] = `
                 relative={true}
               />
             </td>
-            <td
-              className="u-align-text--right"
-            >
+            <td>
               <a
                 onClick={[Function]}
               >
@@ -204,7 +191,6 @@ exports[`Profile Model List can render 1`] = `
         Object {
           "columns": Array [
             Object {
-              "columnSize": 3,
               "content": <a
                 href="/gui/u/tester/mymodel2"
                 onClick={[Function]}
@@ -213,11 +199,9 @@ exports[`Profile Model List can render 1`] = `
               </a>,
             },
             Object {
-              "columnSize": 2,
               "content": "Me",
             },
             Object {
-              "columnSize": 3,
               "content": <React.Fragment>
                 <span
                   className="profile-model-list__machine-number"
@@ -229,8 +213,7 @@ exports[`Profile Model List can render 1`] = `
               </React.Fragment>,
             },
             Object {
-              "columnSize": 1,
-              "content": <div
+              "content": <span
                 className="profile-model-list__access tooltip"
               >
                 <span
@@ -246,20 +229,15 @@ exports[`Profile Model List can render 1`] = `
                   name="user_16"
                   size="16"
                 />
-              </div>,
+              </span>,
             },
             Object {
-              "columnSize": 2,
               "content": <DateDisplay
                 date="2017-07-06T16:26:47.000Z"
                 relative={true}
               />,
             },
             Object {
-              "classes": Array [
-                "u-text-align--right",
-              ],
-              "columnSize": 1,
               "content": <a
                 onClick={[Function]}
               >
@@ -292,19 +270,17 @@ exports[`Profile Model List can render 1`] = `
                 google
                 /us-central1
               </React.Fragment>
-              <td>
-                <a
-                  className="link"
-                  onClick={[Function]}
-                  role="button"
-                  tabIndex="0"
-                >
-                  admin
-                </a>
-              </td>
+              <a
+                className="profile-model-list__link"
+                onClick={[Function]}
+                role="button"
+                tabIndex="0"
+              >
+                admin
+              </a>
             </td>
             <td>
-              <div
+              <span
                 className="profile-model-list__access tooltip"
               >
                 <span
@@ -320,7 +296,7 @@ exports[`Profile Model List can render 1`] = `
                   name="user_16"
                   size="16"
                 />
-              </div>
+              </span>
             </td>
             <td>
               <DateDisplay
@@ -328,9 +304,7 @@ exports[`Profile Model List can render 1`] = `
                 relative={true}
               />
             </td>
-            <td
-              className="u-align-text--right"
-            >
+            <td>
               <a
                 onClick={[Function]}
               >
@@ -346,7 +320,6 @@ exports[`Profile Model List can render 1`] = `
         Object {
           "columns": Array [
             Object {
-              "columnSize": 3,
               "content": <a
                 href="/gui/u/tester2/test-db"
                 onClick={[Function]}
@@ -355,11 +328,9 @@ exports[`Profile Model List can render 1`] = `
               </a>,
             },
             Object {
-              "columnSize": 2,
               "content": "tester2",
             },
             Object {
-              "columnSize": 3,
               "content": <React.Fragment>
                 <span
                   className="profile-model-list__machine-number"
@@ -371,8 +342,7 @@ exports[`Profile Model List can render 1`] = `
               </React.Fragment>,
             },
             Object {
-              "columnSize": 1,
-              "content": <div
+              "content": <span
                 className="profile-model-list__access tooltip"
               >
                 <span
@@ -388,20 +358,15 @@ exports[`Profile Model List can render 1`] = `
                   name="show_16"
                   size="16"
                 />
-              </div>,
+              </span>,
             },
             Object {
-              "columnSize": 2,
               "content": <DateDisplay
                 date="--"
                 relative={true}
               />,
             },
             Object {
-              "classes": Array [
-                "u-text-align--right",
-              ],
-              "columnSize": 1,
               "content": null,
             },
           ],
@@ -434,7 +399,7 @@ exports[`Profile Model List can render 1`] = `
               </p>
             </td>
             <td>
-              <div
+              <span
                 className="profile-model-list__access tooltip"
               >
                 <span
@@ -450,7 +415,7 @@ exports[`Profile Model List can render 1`] = `
                   name="show_16"
                   size="16"
                 />
-              </div>
+              </span>
             </td>
             <td>
               <DateDisplay
@@ -458,16 +423,13 @@ exports[`Profile Model List can render 1`] = `
                 relative={true}
               />
             </td>
-            <td
-              className="u-align-text--right"
-            />
+            <td />
           </React.Fragment>,
           "key": "test-db",
         },
         Object {
           "columns": Array [
             Object {
-              "columnSize": 3,
               "content": <a
                 href="/gui/u/tester3/website"
                 onClick={[Function]}
@@ -476,11 +438,9 @@ exports[`Profile Model List can render 1`] = `
               </a>,
             },
             Object {
-              "columnSize": 2,
               "content": "tester3",
             },
             Object {
-              "columnSize": 3,
               "content": <React.Fragment>
                 <span
                   className="profile-model-list__machine-number"
@@ -492,8 +452,7 @@ exports[`Profile Model List can render 1`] = `
               </React.Fragment>,
             },
             Object {
-              "columnSize": 1,
-              "content": <div
+              "content": <span
                 className="profile-model-list__access tooltip"
               >
                 <span
@@ -509,20 +468,15 @@ exports[`Profile Model List can render 1`] = `
                   name="user_16"
                   size="16"
                 />
-              </div>,
+              </span>,
             },
             Object {
-              "columnSize": 2,
               "content": <DateDisplay
                 date="2017-07-05T01:42:05.000Z"
                 relative={true}
               />,
             },
             Object {
-              "classes": Array [
-                "u-text-align--right",
-              ],
-              "columnSize": 1,
               "content": <a
                 onClick={[Function]}
               >
@@ -562,7 +516,7 @@ exports[`Profile Model List can render 1`] = `
               </p>
             </td>
             <td>
-              <div
+              <span
                 className="profile-model-list__access tooltip"
               >
                 <span
@@ -578,7 +532,7 @@ exports[`Profile Model List can render 1`] = `
                   name="user_16"
                   size="16"
                 />
-              </div>
+              </span>
             </td>
             <td>
               <DateDisplay
@@ -586,9 +540,7 @@ exports[`Profile Model List can render 1`] = `
                 relative={true}
               />
             </td>
-            <td
-              className="u-align-text--right"
-            >
+            <td>
               <a
                 onClick={[Function]}
               >

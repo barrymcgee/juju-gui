@@ -84,7 +84,7 @@ BasicTable.propTypes = {
   headers: PropTypes.arrayOf(PropTypes.shape({
     content: PropTypes.node,
     // The number of columns (between 1 and 12).
-    columnSize: PropTypes.number.isRequired,
+    columnSize: PropTypes.number,
     // The extra classes to apply to the column.
     classes: PropTypes.arrayOf(PropTypes.string)
   }).isRequired).isRequired,
@@ -102,10 +102,10 @@ BasicTable.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.node,
       // The number of columns (between 1 and 12).
-      columnSize: PropTypes.number.isRequired,
+      columnSize: PropTypes.number,
       // The extra classes to apply to the column.
       classes: PropTypes.arrayOf(PropTypes.string)
-    }).isRequired).isRequired,
+    }).isRequired),
     // Content to be displayed when the row is toggled.
     expandedContent: PropTypes.any,
     // Set the expanded content state from outside the table.

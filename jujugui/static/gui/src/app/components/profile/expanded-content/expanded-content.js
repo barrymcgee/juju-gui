@@ -32,61 +32,6 @@ class ProfileExpandedContent extends React.Component {
     });
   }
 
-  /**
-    Handle deploying an entity.
-    @param entityId {String} A charm or bundle id.
-  */
-  _handleDeploy(entityId) {
-    this.props.addToModel(entityId);
-    this.props.changeState({
-      hash: null,
-      profile: null
-    });
-  }
-
-  /**
-    Generate a list of permissions.
-    @param permissions {Array} The list of permissions.
-    @returns {Object} The list as JSX.
-  */
-  _generatePermissions(permissions) {
-    let items = permissions.map((username, i) => {
-      let content;
-      if (username === 'everyone') {
-        content = username;
-      } else {
-        content = (
-          <Link
-            changeState={this.props.changeState}
-            clickState={{
-              hash: null,
-              profile: username
-            }}
-            generatePath={this.props.generatePath}>
-            {username}
-          </Link>);
-      }
-      return (
-        <li
-          className="profile-expanded-content__permission"
-          key={username + i}>
-          {content}
-        </li>);
-    });
-    if (items.length === 0) {
-      items = (
-        <li
-          className="profile-expanded-content__permission"
-          key="none">
-          None
-        </li>);
-    }
-    return (
-      <ul className="profile-expanded-content__permissions">
-        {items}
-      </ul>);
-  }
-
   render() {
     const entity = this.props.entity;
     const getDiagramURL = this.props.getDiagramURL;
@@ -94,55 +39,52 @@ class ProfileExpandedContent extends React.Component {
     const title = `Add to ${modelName || 'model'}`;
     const type = getDiagramURL ? 'bundle' : 'charm';
     return (
-      <div className="profile-expanded-content">
-        {this.props.topRow}
-        <div className="six-col">
+      <React.Fragment>
+        <td>
+          {this.props.mainInfo.icon}
+          {this.props.entityLink}
           {entity.description ? (
-            <p className="profile-expanded-content__entity-desc">{entity.description}</p>
-          ): null}
+            <span>{entity.description}</span>
+          ) : null}
           {getDiagramURL ? (
             <EntityContentDiagram
               diagramUrl={getDiagramURL(entity.id)} />) : null}
-        </div>
-        <div className="six-col last-col">
+        </td>
+        <td>
+          {this.props.mainInfo.series}
           {entity.bugUrl ? (
-            <div>
-              <a
-                href={entity.bugUrl}
-                onClick={this._stopPropagation.bind(this)}
-                target="_blank">
-                Bugs
-              </a>
-            </div>) : null}
+            <a href={entity.bugUrl}
+              onClick={this._stopPropagation.bind(this)}
+              target="_blank">
+              Bugs
+            </a>) : null}
           {entity.homepage ? (
-            <div>
-              <a
-                href={entity.homepage}
-                onClick={this._stopPropagation.bind(this)}
-                target="_blank">
-                Homepage
-              </a>
-            </div>) : null}
-          <p className="profile-expanded-content__permissions-title">
+            <a href={entity.homepage}
+              onClick={this._stopPropagation.bind(this)}
+              target="_blank">
+              Homepage
+            </a>) : null}
+          <span>
             Writeable:
-          </p>
+          </span>
           {this._generatePermissions(entity.perm.write)}
-          <p className="profile-expanded-content__permissions-title">
+          <span>
             Readable:
-          </p>
+          </span>
           {this._generatePermissions(entity.perm.read)}
-        </div>
-        <div className="three-col prepend-nine last-col">
-          <Button
+        </td>
+        <td>
+          {this.props.mainInfo.version}
+          <GenericButton
             action={this._handleDeploy.bind(this, entity.id)}
             disabled={this.props.acl.isReadOnly()}
             tooltip={
               `Add this ${type} to ${modelName ? 'your current' : 'a new'} model`}
             type="positive">
             {title}
-          </Button>
-        </div>
-      </div>);
+          </GenericButton>
+        </td>
+      </React.Fragment>);
   }
 };
 
@@ -156,7 +98,7 @@ ProfileExpandedContent.propTypes = {
   generatePath: PropTypes.func.isRequired,
   getDiagramURL: PropTypes.func,
   getModelName: PropTypes.func.isRequired,
-  topRow: PropTypes.object.isRequired
+  entityLink: PropTypes.object.isRequired
 };
 
 module.exports = ProfileExpandedContent;

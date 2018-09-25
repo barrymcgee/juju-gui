@@ -31,8 +31,10 @@ class ProfileModelList extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const props = this.props;
-    if (props.userInfo.profile !== nextProps.userInfo.profile ||
-        props.facadesExist !== nextProps.facadesExist) {
+    if (
+      props.userInfo.profile !== nextProps.userInfo.profile ||
+      props.facadesExist !== nextProps.facadesExist
+    ) {
       this._fetchModels(nextProps.facadesExist);
     }
   }
@@ -48,7 +50,7 @@ class ProfileModelList extends React.Component {
     }
     // Delay the call until after the state change to prevent race
     // conditions.
-    this.setState({loadingModels: true}, () => {
+    this.setState({ loadingModels: true }, () => {
       this.props.listModelsWithInfo(this._fetchModelsCallback.bind(this));
     });
   }
@@ -59,7 +61,7 @@ class ProfileModelList extends React.Component {
     @param {Array} modelList The list of models.
   */
   _fetchModelsCallback(err, modelList) {
-    this.setState({loadingModels: false}, () => {
+    this.setState({ loadingModels: false }, () => {
       if (err) {
         const message = 'Cannot load models';
         console.error(message, err);
@@ -70,7 +72,7 @@ class ProfileModelList extends React.Component {
         });
         return;
       }
-      this.setState({models: modelList});
+      this.setState({ models: modelList });
     });
   }
 
@@ -79,19 +81,23 @@ class ProfileModelList extends React.Component {
     @param {Object} string The UUID of the model to destroy.
   */
   _confirmDestroy(modelUUID) {
-    this.setState({notification: null});
-    this.props.destroyModel(modelUUID, (errors, data) => {
-      if (errors) {
-        errors.forEach(error => {
-          this.props.addNotification({
-            title: 'Error destroying model',
-            message: error,
-            level: 'error'
+    this.setState({ notification: null });
+    this.props.destroyModel(
+      modelUUID,
+      (errors, data) => {
+        if (errors) {
+          errors.forEach(error => {
+            this.props.addNotification({
+              title: 'Error destroying model',
+              message: error,
+              level: 'error'
+            });
           });
-        });
-      }
-      this._fetchModels(this.props.facadesExist);
-    }, false);
+        }
+        this._fetchModels(this.props.facadesExist);
+      },
+      false
+    );
   }
 
   /**
@@ -99,25 +105,29 @@ class ProfileModelList extends React.Component {
     @param {Object} model The model data.
   */
   _showConfirmation(model) {
-    const buttons = [{
-      title: 'Cancel',
-      action: () => this.setState({notification: null}),
-      type: 'inline-neutral'
-    }, {
-      title: 'Destroy',
-      action: this._confirmDestroy.bind(this, model.uuid),
-      type: 'destructive'
-    }];
-    const message = `Are you sure you want to destroy ${model.name}?`
-      + ' All the applications, units and storage used by the model will be'
-      + ' destroyed. This action cannot be undone.';
+    const buttons = [
+      {
+        title: 'Cancel',
+        action: () => this.setState({ notification: null }),
+        type: 'inline-neutral'
+      },
+      {
+        title: 'Destroy',
+        action: this._confirmDestroy.bind(this, model.uuid),
+        type: 'destructive'
+      }
+    ];
+    const message =
+      `Are you sure you want to destroy ${model.name}?` +
+      ' All the applications, units and storage used by the model will be' +
+      ' destroyed. This action cannot be undone.';
     this.setState({
       notification: (
-        <Popup
-          buttons={buttons}
+        <Popup buttons={buttons}
           title="Destroy model">
           <p>{message}</p>
-        </Popup>)
+        </Popup>
+      )
     });
   }
 
@@ -156,11 +166,7 @@ class ProfileModelList extends React.Component {
     @return {Object} The model list as JSX.
   */
   _generateModels() {
-    const icons = new Map([
-      ['read', 'show_16'],
-      ['write', 'edit_16'],
-      ['admin', 'user_16']
-    ]);
+    const icons = new Map([['read', 'show_16'], ['write', 'edit_16'], ['admin', 'user_16']]);
     const profileUsername = this.props.userInfo.profile;
     const models = this.state.models || [];
     return (
@@ -202,13 +208,13 @@ class ProfileModelList extends React.Component {
           </React.Fragment>
         );
         const accessContent = (
-          <div className="profile-model-list__access tooltip">
+          <span className="profile-model-list__access tooltip">
             <span className="tooltip__tooltip">
               <span className="tooltip__inner tooltip__inner--down">{profileUser.access}</span>
             </span>
             <SvgIcon name={icons.get(profileUser.access)}
               size="16" />
-          </div>
+          </span>
         );
         const dateContent = (
           <DateDisplay date={model.lastConnection || '--'}
@@ -224,15 +230,13 @@ class ProfileModelList extends React.Component {
         let expandedContent;
         if (owner === profileUsername) {
           expandedContent = (
-            <td>
-              <a
-                className="link"
-                onClick={this._handleCredentialClick.bind(this, model.credential)}
-                role="button"
-                tabIndex="0">
-                {model.credentialName}
-              </a>
-            </td>
+            <a
+              className="profile-model-list__link"
+              onClick={this._handleCredentialClick.bind(this, model.credential)}
+              role="button"
+              tabIndex="0">
+              {model.credentialName}
+            </a>
           );
         } else {
           expandedContent = (
@@ -243,20 +247,15 @@ class ProfileModelList extends React.Component {
           columns: [
             {
               content: nameContent
-            },
-            {
+            }, {
               content: username
-            },
-            {
+            }, {
               content: regionContent
-            },
-            {
+            }, {
               content: accessContent
-            },
-            {
+            }, {
               content: dateContent
-            },
-            {
+            }, {
               content: destroyContent
             }
           ],
@@ -294,7 +293,7 @@ class ProfileModelList extends React.Component {
     // switchModel does nothing if you're already connected to the model.
     // This is the correct thing to do but we still want to close the profile
     // in this case.
-    this.props.changeState({profile: null});
+    this.props.changeState({ profile: null });
     this.props.switchModel(model);
   }
 
@@ -310,7 +309,8 @@ class ProfileModelList extends React.Component {
       return (
         <div className="profile-model-list">
           <Spinner />
-        </div>);
+        </div>
+      );
     }
     const rowData = this._generateModels();
     return (
@@ -318,45 +318,48 @@ class ProfileModelList extends React.Component {
         <div className="profile-model-list__header v1">
           <h2 className="profile__title">
             My models
-            <span className="profile__title-count">
-              ({rowData.length})
-            </span>
+            <span className="profile__title-count">({rowData.length})</span>
           </h2>
           <CreateModelButton
             changeState={this.props.changeState}
             switchModel={this.props.switchModel}
             title="Start a new model" />
         </div>
-        {!rowData.length ? null : <BasicTable
-          headerClasses={['profile__entity-table-header-row']}
-          headerColumnClasses={['profile__entity-table-header-column']}
-          headers={[{
-            content: 'Name',
-            columnSize: 3
-          }, {
-            content: 'Owner',
-            columnSize: 2
-          }, {
-            content: 'Machines, cloud/region',
-            columnSize: 3
-          }, {
-            content: '',
-            columnSize: 1
-          }, {
-            content: 'Last accessed',
-            columnSize: 2
-          }, {
-            content: '',
-            columnSize: 1
-          }]}
-          rowClasses={['profile__entity-table-row']}
-          rowColumnClasses={['profile__entity-table-column']}
-          rows={rowData} />}
+        {!rowData.length ? null : (
+          <BasicTable
+            headers={[
+              {
+                content: 'Name',
+                columnSize: 3
+              },
+              {
+                content: 'Owner',
+                columnSize: 2
+              },
+              {
+                content: 'Machines, cloud/region',
+                columnSize: 3
+              },
+              {
+                content: '',
+                columnSize: 1
+              },
+              {
+                content: 'Last accessed',
+                columnSize: 2
+              },
+              {
+                content: '',
+                columnSize: 1
+              }
+            ]}
+            rows={rowData} />
+        )}
         {this._generateNotification()}
-      </div>);
+      </div>
+    );
   }
-
-};
+}
 
 ProfileModelList.propTypes = {
   acl: PropTypes.object,

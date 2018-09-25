@@ -1,16 +1,25 @@
 .profile-model-list {
 
+   tr {
+    display: grid;
+    grid-template-columns: 1fr 0.5fr 1.5fr 0.25fr 0.75fr 0.25fr;
+  }
+
+  tbody tr {
+    padding: 0.5rem 0;
+  }
+
   &__header {
     display: grid;
     grid-template-columns: 1fr 170px;
   }
 
-  table th[scope='col'] {
-    text-align: left;
+  &__machine-number {
+    margin-right: 1rem;
   }
 
-  tr {
-    display: grid;
-    grid-template-columns: 1fr 0.5fr 1.5fr 0.25fr 0.75fr 0.25fr;
+  &__link {
+    display: block;
+    padding: 1rem 0;
   }
 }
