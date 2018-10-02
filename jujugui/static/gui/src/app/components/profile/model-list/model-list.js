@@ -50,7 +50,7 @@ class ProfileModelList extends React.Component {
     }
     // Delay the call until after the state change to prevent race
     // conditions.
-    this.setState({ loadingModels: true }, () => {
+    this.setState({loadingModels: true}, () => {
       this.props.listModelsWithInfo(this._fetchModelsCallback.bind(this));
     });
   }
@@ -61,7 +61,7 @@ class ProfileModelList extends React.Component {
     @param {Array} modelList The list of models.
   */
   _fetchModelsCallback(err, modelList) {
-    this.setState({ loadingModels: false }, () => {
+    this.setState({loadingModels: false}, () => {
       if (err) {
         const message = 'Cannot load models';
         console.error(message, err);
@@ -72,7 +72,7 @@ class ProfileModelList extends React.Component {
         });
         return;
       }
-      this.setState({ models: modelList });
+      this.setState({models: modelList});
     });
   }
 
@@ -81,7 +81,7 @@ class ProfileModelList extends React.Component {
     @param {Object} string The UUID of the model to destroy.
   */
   _confirmDestroy(modelUUID) {
-    this.setState({ notification: null });
+    this.setState({notification: null});
     this.props.destroyModel(
       modelUUID,
       (errors, data) => {
@@ -108,7 +108,7 @@ class ProfileModelList extends React.Component {
     const buttons = [
       {
         title: 'Cancel',
-        action: () => this.setState({ notification: null }),
+        action: () => this.setState({notification: null}),
         type: 'inline-neutral'
       },
       {
@@ -123,7 +123,8 @@ class ProfileModelList extends React.Component {
       ' destroyed. This action cannot be undone.';
     this.setState({
       notification: (
-        <Popup buttons={buttons}
+        <Popup
+          buttons={buttons}
           title="Destroy model">
           <p>{message}</p>
         </Popup>
@@ -212,18 +213,21 @@ class ProfileModelList extends React.Component {
             <span className="tooltip__tooltip">
               <span className="tooltip__inner tooltip__inner--down">{profileUser.access}</span>
             </span>
-            <SvgIcon name={icons.get(profileUser.access)}
+            <SvgIcon
+              name={icons.get(profileUser.access)}
               size="16" />
           </span>
         );
         const dateContent = (
-          <DateDisplay date={model.lastConnection || '--'}
+          <DateDisplay
+            date={model.lastConnection || '--'}
             relative={true} />
         );
         const destroyContent =
           userIsAdmin && !model.isController ? (
             <a onClick={this._destroyModel.bind(this, model, bdRef)}>
-              <SvgIcon name="delete_16"
+              <SvgIcon
+                name="delete_16"
                 size="16" />
             </a>
           ) : null;
@@ -293,7 +297,7 @@ class ProfileModelList extends React.Component {
     // switchModel does nothing if you're already connected to the model.
     // This is the correct thing to do but we still want to close the profile
     // in this case.
-    this.props.changeState({ profile: null });
+    this.props.changeState({profile: null});
     this.props.switchModel(model);
   }
 
@@ -329,28 +333,22 @@ class ProfileModelList extends React.Component {
           <BasicTable
             headers={[
               {
-                content: 'Name',
-                columnSize: 3
+                content: 'Name'
               },
               {
-                content: 'Owner',
-                columnSize: 2
+                content: 'Owner'
               },
               {
-                content: 'Machines, cloud/region',
-                columnSize: 3
+                content: 'Machines, cloud/region'
               },
               {
-                content: '',
-                columnSize: 1
+                content: ''
               },
               {
-                content: 'Last accessed',
-                columnSize: 2
+                content: 'Last accessed'
               },
               {
-                content: '',
-                columnSize: 1
+                content: ''
               }
             ]}
             rows={rowData} />

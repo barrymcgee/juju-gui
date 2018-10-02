@@ -94,7 +94,7 @@ describe('Profile Bundle List', function() {
   };
 
   it('can render', () => {
-    const wrapper = renderComponent({ gisf: true });
+    const wrapper = renderComponent({gisf: true});
     expect(wrapper).toMatchSnapshot();
   });
 

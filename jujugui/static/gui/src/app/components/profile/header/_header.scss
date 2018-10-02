@@ -3,7 +3,7 @@
 
   &__inner {
     @media (max-width: $breakpoint-medium){
-      
+
       > div:last-child {
         margin-top: 2rem;
       }
@@ -20,7 +20,7 @@
     }
   }
 
-  div.p-strip { 
+  div.p-strip {
     background-color: $color-x-light;
   }
 

@@ -33,7 +33,6 @@ class BasicTableRow extends React.Component {
 
   /**
     Show the entity details when clicked.
-
     @method _handleRowClick
     @param onClick {Function} The function to call when a row is clicked.
     @param evt {Object} The click event.
@@ -124,7 +123,8 @@ class BasicTableRow extends React.Component {
     });
     const onClick = this._isRowClickable() ? this._toggleExpanded.bind(this) : null;
     return (
-      <tr className={classes}
+      <tr
+className={classes}
         onClick={onClick}
         role="button"
         tabIndex="0">

@@ -2,6 +2,16 @@
   @extend %list-style;
   margin-bottom: 20px;
 
+  // Body parent selectors required for specificity
+  body & {
+
+    td,
+    th {
+      background: none;
+      border: 0;
+    }
+  }
+
   &__header {
     border-bottom: 1px solid $color-mid-light;
     font-weight: 400;
@@ -12,13 +22,13 @@
     transition: all 0.25s;
 
     &-link {
-      position: absolute;
-      // Raise the main link above the children so that it can be clicked on.
-      z-index: 1;
-      top: 0;
       bottom: 0;
       left: 0;
+      position: absolute;
       right: 0;
+      top: 0;
+      // Raise the main link above the children so that it can be clicked on.
+      z-index: 1;
     }
 
     &--clickable {

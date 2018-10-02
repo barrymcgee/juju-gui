@@ -4,13 +4,11 @@
 const PropTypes = require('prop-types');
 const React = require('react');
 const shapeup = require('shapeup');
-const { urls } = require('jaaslib');
+const {urls} = require('jaaslib');
 
 const BasicTable = require('../../shared/basic-table/basic-table');
 const ProfileCharmstoreLogin = require('../charmstore-login/charmstore-login');
-const ProfileExpandedContent = require('../expanded-content/expanded-content');
 const Spinner = require('../../spinner/spinner');
-const GenericButton = require('../../generic-button/generic-button');
 
 /**
   Charm list React component used to display a list of the users charms in
@@ -52,7 +50,7 @@ class ProfileCharmList extends React.Component {
   */
   _fetchCharms(user) {
     const props = this.props;
-    this.setState({ loading: true }, () => {
+    this.setState({loading: true}, () => {
       this.xhrs.push(
         props.charmstore.list(
           user,
@@ -67,7 +65,7 @@ class ProfileCharmList extends React.Component {
               });
               return;
             }
-            this.setState({ loading: false, data });
+            this.setState({loading: false, data});
           },
           'charm'));
     });
@@ -82,7 +80,7 @@ class ProfileCharmList extends React.Component {
   _navigateToCharm(path, e) {
     e.preventDefault();
     e.stopPropagation();
-    this.props.changeState({ profile: null, store: path, hash: null });
+    this.props.changeState({profile: null, store: path, hash: null});
   }
 
   /**
@@ -277,16 +275,15 @@ class ProfileCharmList extends React.Component {
                 </span>
                 <button
                   // onClick={this.props.handleDeploy(charm.id, this.props)}
+                  className="p-button--positive"
                   disabled={this.props.acl.isReadOnly()}
                   tooltip={
-                    `Add this ${charm.entityType} to ${this.modelName ? 'your current' : 'a new'} model`}
-                  className="p-button--positive"
-                >
+                    `Add this ${charm.entityType} to ${this.modelName ? 'your current' : 'a new'} model`}>
                   {title}
                 </button>
               </td>
             </React.Fragment>
-          ),
+          )
         };
       });
       content = (

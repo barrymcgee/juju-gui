@@ -75,8 +75,7 @@ class Profile extends React.Component {
               hash: null,
               profile: username
             }}
-            generatePath={props.generatePath}
-          >
+            generatePath={props.generatePath}>
             {username}
           </Link>);
       }
@@ -130,6 +129,7 @@ class Profile extends React.Component {
       sectionsMap.set('models', {
         label: 'Models',
         getComponent: () => {
+
           return (
             <ProfileModelList
               acl={props.acl}

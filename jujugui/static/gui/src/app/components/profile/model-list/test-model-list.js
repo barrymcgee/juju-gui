@@ -161,11 +161,11 @@ describe('Profile Model List', function() {
           sinon.stub().callsArgWith(0, null, JSON.parse(rawModelData))
         }
         switchModel={options.switchModel || sinon.stub()}
-        userInfo={options.userInfo || { profile: 'tester' }} />
+        userInfo={options.userInfo || {profile: 'tester'}} />
     );
 
   it('can render', () => {
-    const wrapper = renderComponent({ gisf: true });
+    const wrapper = renderComponent({gisf: true});
     expect(wrapper).toMatchSnapshot();
   });
 
