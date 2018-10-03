@@ -86,7 +86,9 @@ describe('Profile Bundle List', function() {
           url: '/charmstore'
         }}
         generatePath={options.generatePath || sinon.stub()}
+        generatePermissions={options.generatePermissions || sinon.stub()}
         getModelName={options.getModelName || sinon.stub()}
+        handleDeploy={options.handleDeploy || sinon.stub()}
         isActiveUsersProfile={isActiveUsersProfile}
         storeUser={options.storeUser || sinon.stub()}
         user={

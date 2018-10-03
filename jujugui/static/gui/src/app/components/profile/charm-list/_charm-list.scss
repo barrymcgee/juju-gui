@@ -25,6 +25,13 @@
     margin-bottom: 2rem;
   }
 
+  &__desc {
+
+    li.p-inline-list__item {
+      margin-right: .5rem;
+    }
+  }
+
   &__release {
     display: flex;
     flex-direction: column;

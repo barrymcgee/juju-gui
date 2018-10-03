@@ -2,8 +2,9 @@
   @extend %list-style;
   margin-bottom: 20px;
 
-  // Body parent selectors required for specificity
-  body & {
+  // .v1 selector required for specificity
+  .v1 & {
+    border-bottom: 1px solid $color-mid-light;
 
     td,
     th {
@@ -11,8 +12,10 @@
       border: 0;
     }
 
-    thead tr {
-      border-bottom: 1px solid $color-mid-light;
+    tbody {
+      tr {
+        padding: .75rem;
+      }
     }
   }
 
@@ -41,8 +44,9 @@
 
     &.is-expanded {
       background: $color-x-light;
+      box-shadow: 0 1px 5px 1px hsla(0,0%,7%,.2);
+      border: 0;
       margin: 1rem 0;
-      padding: .25rem;
     }
 
     &:first-child.is-expanded {

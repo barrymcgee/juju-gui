@@ -20,9 +20,6 @@ class BasicTable extends React.Component {
   _generateRow(isHeader, row, index = 0, rowCount = 1) {
     const key = isHeader ? 'basic-table-header' : row.key;
     let classes = (row.classes || []).concat(this.props.rowClasses);
-    if (isHeader) {
-      classes = classes.concat(this.props.headerClasses);
-    }
     return (
       <BasicTableRow
         classes={classes}

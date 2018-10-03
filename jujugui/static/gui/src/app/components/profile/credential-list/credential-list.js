@@ -293,11 +293,9 @@ class ProfileCredentialList extends React.Component {
       rows.push({
         classes: key === selectedCredential ? ['profile-credential-list--highlighted'] : null,
         columns: [{
-          content: credential.displayName,
-          columnSize: 6
+          content: credential.displayName
         }, {
-          content: credential.cloud,
-          columnSize: 2
+          content: credential.cloud
         }, {
           content: function() {
             const models = credential.models;
@@ -312,8 +310,7 @@ class ProfileCredentialList extends React.Component {
               default:
                 return `${modelCount} Models`;
             }
-          }(),
-          columnSize: 3
+          }()
         }, {
           content: (
             <ButtonDropdown
@@ -325,7 +322,7 @@ class ProfileCredentialList extends React.Component {
                 label: 'Delete',
                 action: this._setDeleteCredential.bind(this, key)
               }]} />),
-          columnSize: 1
+          classes: ['u-align-text--right']
         }],
         expandedContent: this._generateEditCredentials(credential, key),
         expandedContentExpanded: this.state.editCredential === key,
@@ -344,7 +341,8 @@ class ProfileCredentialList extends React.Component {
           }, {
             content: 'Used by'
           }, {
-            content: 'Action'
+            content: 'Action',
+            classes: ['u-align-text--right']
           }]}
           rows={rows} />
       </div>

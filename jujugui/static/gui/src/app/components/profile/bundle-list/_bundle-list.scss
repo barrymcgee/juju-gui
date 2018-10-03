@@ -11,7 +11,6 @@
 
   &__meta {
     display: block;
-    padding: 0 1rem 0;
 
     a {
       display: inline-block;
@@ -20,6 +19,10 @@
   }
 
   .entity-content__diagram {
-    margin: 1.5rem .5rem 0;
+    margin: 1.5rem 0 0;
+  }
+
+  .icon-list__item {
+    margin-right: .25rem;
   }
 }

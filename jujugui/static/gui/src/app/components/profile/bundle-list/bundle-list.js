@@ -177,9 +177,11 @@ class ProfileBundleList extends React.Component {
                 changeState={this.props.changeState}
                 generatePath={this.props.generatePath} />)
           }, {
-            content: bundle.machineCount
+            content: bundle.machineCount,
+            classes: ['u-align-text--right']
           }, {
-            content: bundle.unitCount
+            content: bundle.unitCount,
+            classes: ['u-align-text--right']
           }, {
             content: version
           }],
@@ -210,10 +212,10 @@ class ProfileBundleList extends React.Component {
                   {/* {this.props.generatePermissions(bundle.perm.read)} */}
                 </span>
               </td>
-              <td>
+              <td className="u-align-text--right">
                 {bundle.machineCount}
               </td>
-              <td>
+              <td className="u-align-text--right">
                 {bundle.unitCount}
               </td>
               <td>
@@ -234,9 +236,11 @@ class ProfileBundleList extends React.Component {
             }, {
               content: ''
             }, {
-              content: 'Machines'
+              content: 'Machines',
+              classes: ['u-align-text--right']
             }, {
-              content: 'Units'
+              content: 'Units',
+              classes: ['u-align-text--right']
             }, {
               content: 'Release'
             }]}

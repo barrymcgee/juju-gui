@@ -29,9 +29,15 @@ exports[`Profile Bundle List can render 1`] = `
             "content": "",
           },
           Object {
+            "classes": Array [
+              "u-align-text--right",
+            ],
             "content": "Machines",
           },
           Object {
+            "classes": Array [
+              "u-align-text--right",
+            ],
             "content": "Units",
           },
           Object {
@@ -83,9 +89,15 @@ exports[`Profile Bundle List can render 1`] = `
                 />,
               },
               Object {
+                "classes": Array [
+                  "u-align-text--right",
+                ],
                 "content": 2,
               },
               Object {
+                "classes": Array [
+                  "u-align-text--right",
+                ],
                 "content": 3,
               },
               Object {
@@ -125,10 +137,14 @@ exports[`Profile Bundle List can render 1`] = `
                   Readable:
                 </span>
               </td>
-              <td>
+              <td
+                className="u-align-text--right"
+              >
                 2
               </td>
-              <td>
+              <td
+                className="u-align-text--right"
+              >
                 3
               </td>
               <td>
@@ -169,9 +185,15 @@ exports[`Profile Bundle List can render 1`] = `
                 />,
               },
               Object {
+                "classes": Array [
+                  "u-align-text--right",
+                ],
                 "content": 5,
               },
               Object {
+                "classes": Array [
+                  "u-align-text--right",
+                ],
                 "content": 5,
               },
               Object {
@@ -211,10 +233,14 @@ exports[`Profile Bundle List can render 1`] = `
                   Readable:
                 </span>
               </td>
-              <td>
+              <td
+                className="u-align-text--right"
+              >
                 5
               </td>
-              <td>
+              <td
+                className="u-align-text--right"
+              >
                 5
               </td>
               <td>
