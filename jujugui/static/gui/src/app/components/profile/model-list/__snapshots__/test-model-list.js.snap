@@ -5,7 +5,7 @@ exports[`Profile Model List can render 1`] = `
   className="profile-model-list"
 >
   <div
-    className="profile-model-list__header v1"
+    className="profile-model-list__header"
   >
     <h2
       className="profile__title"
@@ -31,27 +31,21 @@ exports[`Profile Model List can render 1`] = `
     headers={
       Array [
         Object {
-          "columnSize": 3,
           "content": "Name",
         },
         Object {
-          "columnSize": 2,
           "content": "Owner",
         },
         Object {
-          "columnSize": 3,
           "content": "Machines, cloud/region",
         },
         Object {
-          "columnSize": 1,
           "content": "",
         },
         Object {
-          "columnSize": 2,
           "content": "Last accessed",
         },
         Object {
-          "columnSize": 1,
           "content": "",
         },
       ]

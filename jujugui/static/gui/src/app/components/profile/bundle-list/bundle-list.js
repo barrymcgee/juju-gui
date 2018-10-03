@@ -9,8 +9,8 @@ const {urls} = require('jaaslib');
 const BasicTable = require('../../shared/basic-table/basic-table');
 const IconList = require('../../icon-list/icon-list');
 const ProfileCharmstoreLogin = require('../charmstore-login/charmstore-login');
-const ProfileExpandedContent = require('../expanded-content/expanded-content');
 const Spinner = require('../../spinner/spinner');
+const EntityContentDiagram = require('../../entity-details/content/diagram/diagram');
 
 /**
   Charm list React component used to display a list of the users bundles in
@@ -94,12 +94,10 @@ class ProfileBundleList extends React.Component {
   */
   _generateTitle() {
     return (
-      <div className="v1">
-        <h2 className="profile__title">
-          {this.props.isActiveUsersProfile ? 'My' : 'Their'} bundles
-          <span className="profile__title-count">({(this.state.data || []).length})</span>
-        </h2>
-      </div>
+      <h2 className="profile__title">
+        {this.props.isActiveUsersProfile ? 'My' : 'Their'} bundles
+        <span className="profile__title-count">({(this.state.data || []).length})</span>
+      </h2>
     );
   }
 
@@ -136,7 +134,7 @@ class ProfileBundleList extends React.Component {
             type="bundles" />);
       } else {
         content = (
-          <div>
+          <React.Fragment>
             {this._generateTitle()}
             <p className="profile-bundle-list__onboarding">
               Learn about&nbsp;
@@ -146,7 +144,7 @@ class ProfileBundleList extends React.Component {
                 writing your own bundle
               </a>.
             </p>
-          </div>);
+          </React.Fragment>);
       }
     } else {
       const rows = (this.state.data || []).map(bundle => {
@@ -155,6 +153,7 @@ class ProfileBundleList extends React.Component {
         const version = `#${url.revision}`;
         const charmstore = this.props.charmstore;
         const charmstoreURL = this.props.charmstore.url;
+        const getDiagramURL=charmstore.getDiagramURL.bind(charmstore);
         const applications = Object.keys(bundle.applications).map(name => {
           const app = bundle.applications[name];
           return {
@@ -170,85 +169,80 @@ class ProfileBundleList extends React.Component {
                 href={`${this.props.baseURL}${path}`}
                 onClick={this._navigateToBundle.bind(this, path)}>
                 {bundle.name}
-              </a>),
-            columnSize: 3
+              </a>)
           }, {
             content: (
               <IconList
                 applications={applications}
                 changeState={this.props.changeState}
-                generatePath={this.props.generatePath} />),
-            columnSize: 3
+                generatePath={this.props.generatePath} />)
           }, {
-            content: bundle.machineCount,
-            columnSize: 2,
-            classes: ['u-align--right']
+            content: bundle.machineCount
           }, {
-            content: bundle.unitCount,
-            columnSize: 1,
-            classes: ['u-align--right']
+            content: bundle.unitCount
           }, {
-            content: version,
-            columnSize: 3
+            content: version
           }],
           expandedContent: (
-            <ProfileExpandedContent
-              acl={this.props.acl}
-              addToModel={this.props.addToModel}
-              changeState={this.props.changeState}
-              entity={bundle}
-              generatePath={this.props.generatePath}
-              getDiagramURL={charmstore.getDiagramURL.bind(charmstore)}
-              getModelName={this.props.getModelName}
-              topRow={(
-                <div>
-                  <div className="six-col profile-expanded-content__top-row">
-                    <a
-                      href={`${this.props.baseURL}${path}`}
-                      onClick={this._navigateToBundle.bind(this, path)}>
-                      {bundle.name}
-                    </a>
-                  </div>
-                  <div className="two-col profile-expanded-content__top-row u-align--right">
-                    {bundle.machineCount}
-                  </div>
-                  <div className="one-col profile-expanded-content__top-row u-align--right">
-                    {bundle.unitCount}
-                  </div>
-                  <div className="three-col last-col profile-expanded-content__top-row">
-                    {version}
-                  </div>
-                </div>)} />),
+            <React.Fragment>
+              <td>
+                <span className="profile-bundle-list__meta">
+                  <a href={`${this.props.baseURL}${path}`} onClick={this._navigateToBundle.bind(this, path)}>
+                    {bundle.name}
+                  </a>
+                  {bundle.description ? (
+                    <span className="entity__desc">
+                      { bundle.description }
+                    </span>
+                  ) : null}
+                </span>
+                {getDiagramURL ? (
+                  <EntityContentDiagram
+                    diagramUrl={getDiagramURL(bundle.id)} />) : null}
+              </td>
+              <td>
+                <span className="entity__permissions">
+                  Writeable:
+                  {/* {this.props.generatePermissions(bundle.perm.write)} */}
+                </span>
+                <span className="entity__permissions">
+                  Readable:
+                  {/* {this.props.generatePermissions(bundle.perm.read)} */}
+                </span>
+              </td>
+              <td>
+                {bundle.machineCount}
+              </td>
+              <td>
+                {bundle.unitCount}
+              </td>
+              <td>
+                {version}
+              </td>
+            </React.Fragment>
+          ),
           extraData: bundle.name,
           key: bundle.id
         };
       });
       content = (
-        <div>
+        <React.Fragment>
           {this._generateTitle()}
           <BasicTable
-            headerClasses={['profile__entity-table-header-row']}
-            headerColumnClasses={['profile__entity-table-header-column']}
             headers={[{
-              content: 'Name',
-              columnSize: 6
+              content: 'Name'
             }, {
-              content: 'Machines',
-              columnSize: 2,
-              classes: ['u-align--right']
+              content: ''
             }, {
-              content: 'Units',
-              columnSize: 1,
-              classes: ['u-align--right']
+              content: 'Machines'
             }, {
-              content: 'Release',
-              columnSize: 3
+              content: 'Units'
+            }, {
+              content: 'Release'
             }]}
-            rowClasses={['profile__entity-table-row']}
-            rowColumnClasses={['profile__entity-table-column']}
             rows={rows}
             sort={this._byName.bind(this)} />
-        </div>);
+        </React.Fragment>);
     }
     return (
       <div className="profile-bundle-list">
@@ -273,6 +267,7 @@ ProfileBundleList.propTypes = {
     url: PropTypes.string.isRequired
   }).isRequired,
   generatePath: PropTypes.func.isRequired,
+  generatePermissions: PropTypes.func.isRequired,
   getModelName: PropTypes.func.isRequired,
   isActiveUsersProfile: PropTypes.bool.isRequired,
   storeUser: PropTypes.func.isRequired,

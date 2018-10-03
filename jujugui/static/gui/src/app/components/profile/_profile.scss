@@ -1,10 +1,29 @@
 .profile {
 
+  &__title {
+    margin-bottom: 2.2rem;
+  }
+
   &__content {
 
     @media (min-width: $breakpoint-medium) {
       display: grid;
       grid-template-columns: 200px 1fr;
+    }
+  }
+
+  .entity__desc {
+    display: block;
+    line-height: 1.5;
+  }
+
+  .entity__permissions {
+    display: block;
+    margin-bottom: 1rem;
+
+    a {
+      display: block;
+      margin-top: 0.5rem;
     }
   }
 }

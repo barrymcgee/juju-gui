@@ -20,11 +20,6 @@
     padding-right: 1rem;
   }
 
-  &__desc {
-    display: block;
-    line-height: 1.5;
-  }
-
   &__series {
     display: block;
     margin-bottom: 2rem;
@@ -40,16 +35,6 @@
 
     button {
       margin-top: auto;
-    }
-  }
-
-  &__permissions {
-    display: block;
-    margin-bottom: 1rem;
-
-    a {
-      display: block;
-      margin-top: 0.5rem;
     }
   }
 }

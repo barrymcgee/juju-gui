@@ -159,12 +159,12 @@ class Profile extends React.Component {
             changeState={props.changeState}
             charmstore={shapeup.fromShape(props.charmstore, propTypes.charmstore)}
             generatePath={props.generatePath}
+            generatePermissions={this._generatePermissions}
             getModelName={props.getModelName}
+            handleDeploy={this._handleDeploy}
             isActiveUsersProfile={isActiveUsersProfile}
             storeUser={props.storeUser}
-            user={props.userInfo.external}
-            handleDeploy={this._handleDeploy}
-            generatePermissions={this._generatePermissions} />
+            user={props.userInfo.external} />
         );
       }
     });
@@ -182,7 +182,9 @@ class Profile extends React.Component {
             changeState={props.changeState}
             charmstore={shapeup.fromShape(props.charmstore, propTypes.charmstore)}
             generatePath={props.generatePath}
+            generatePermissions={this._generatePermissions}
             getModelName={props.getModelName}
+            handleDeploy={this._handleDeploy}
             isActiveUsersProfile={isActiveUsersProfile}
             storeUser={props.storeUser}
             user={props.userInfo.external} />

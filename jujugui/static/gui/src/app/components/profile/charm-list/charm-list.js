@@ -136,12 +136,10 @@ class ProfileCharmList extends React.Component {
   */
   _generateTitle() {
     return (
-      <div className="v1">
-        <h2 className="profile__title">
-          {this.props.isActiveUsersProfile ? 'My' : 'Their'} charms
-          <span className="profile__title-count">({(this.state.data || []).length})</span>
-        </h2>
-      </div>
+      <h2 className="profile__title">
+        {this.props.isActiveUsersProfile ? 'My' : 'Their'} charms
+        <span className="profile__title-count">({(this.state.data || []).length})</span>
+      </h2>
     );
   }
 
@@ -181,7 +179,7 @@ class ProfileCharmList extends React.Component {
         );
       } else {
         content = (
-          <div class="v1">
+          <React.Fragment>
             {this._generateTitle()}
             <p className="profile-charm-list__onboarding">
               Learn about&nbsp;
@@ -192,7 +190,7 @@ class ProfileCharmList extends React.Component {
               </a>
               .
             </p>
-          </div>
+          </React.Fragment>
         );
       }
     } else {
@@ -251,7 +249,7 @@ class ProfileCharmList extends React.Component {
                     onClick={this._navigateToCharm.bind(this, path)}>
                     {charm.name}
                   </a>
-                  <span className="profile-charm-list__desc">
+                  <span className="entity__desc">
                     {charm.description}
                   </span>
                 </span>
@@ -260,11 +258,11 @@ class ProfileCharmList extends React.Component {
                 <span className="profile-charm-list__series">
                   {series}
                 </span>
-                <span className="profile-charm-list__permissions">
+                <span className="entity__permissions">
                   Writeable:
                   {this.props.generatePermissions(charm.perm.write, this.props)}
                 </span>
-                <span className="profile-charm-list__permissions">
+                <span className="entity__permissions">
                   Readable:
                   {this.props.generatePermissions(charm.perm.read, this.props)}
                 </span>
@@ -304,7 +302,10 @@ class ProfileCharmList extends React.Component {
         </React.Fragment>
       );
     }
-    return <div className="profile-charm-list">{content}</div>;
+    return (
+      <div className="profile-charm-list">
+        {content}
+      </div>);
   }
 }
 
@@ -323,6 +324,7 @@ ProfileCharmList.propTypes = {
     url: PropTypes.string.isRequired
   }).isRequired,
   generatePath: PropTypes.func.isRequired,
+  generatePermissions: PropTypes.func.isRequired,
   getModelName: PropTypes.func.isRequired,
   isActiveUsersProfile: PropTypes.bool.isRequired,
   storeUser: PropTypes.func.isRequired,
