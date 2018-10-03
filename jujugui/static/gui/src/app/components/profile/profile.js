@@ -260,15 +260,13 @@ class Profile extends React.Component {
           getUser={props.getUser}
           gisf={props.gisf}
           userInfo={shapeup.fromShape(props.userInfo, ProfileHeader.propTypes.userInfo)} />
-        <div className="twelve-col">
-          <div className="profile__content inner-wrapper">
-            <ProfileNavigation
-              // Use supplied activeSection or the key from the first map entry.
-              activeSection={this._getSectionInfo().active || mapEntry[0]}
-              changeState={props.changeState}
-              sectionsMap={sectionsMap} />
-            {section.getComponent()}
-          </div>
+        <div className="profile__content">
+          <ProfileNavigation
+            // Use supplied activeSection or the key from the first map entry.
+            activeSection={this._getSectionInfo().active || mapEntry[0]}
+            changeState={props.changeState}
+            sectionsMap={sectionsMap} />
+          {section.getComponent()}
         </div>
       </Panel>
     );

@@ -214,7 +214,7 @@ class ProfileCharmList extends React.Component {
             {
               content: (
                 <React.Fragment>
-                  <td className="profile-charm-list__name">
+                  <span className="profile-charm-list__name">
                     <span className="profile-charm-list__icon">
                       {icon}
                     </span>
@@ -227,7 +227,7 @@ class ProfileCharmList extends React.Component {
                       </a>
                       {this._generateTags(charm.tags)}
                     </span>
-                  </td>
+                  </span>
                 </React.Fragment>
               )
             }, {
@@ -281,7 +281,8 @@ class ProfileCharmList extends React.Component {
                 </button>
               </td>
             </React.Fragment>
-          )
+          ),
+          key: charm.id
         };
       });
       content = (

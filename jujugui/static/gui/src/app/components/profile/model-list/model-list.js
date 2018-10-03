@@ -334,20 +334,15 @@ class ProfileModelList extends React.Component {
             headers={[
               {
                 content: 'Name'
-              },
-              {
+              }, {
                 content: 'Owner'
-              },
-              {
+              }, {
                 content: 'Machines, cloud/region'
-              },
-              {
+              }, {
                 content: ''
-              },
-              {
+              }, {
                 content: 'Last accessed'
-              },
-              {
+              }, {
                 content: ''
               }
             ]}
