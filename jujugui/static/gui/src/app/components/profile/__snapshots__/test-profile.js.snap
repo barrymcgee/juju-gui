@@ -19,56 +19,52 @@ exports[`Profile can render 1`] = `
     }
   />
   <div
-    className="twelve-col"
+    className="profile__content"
   >
-    <div
-      className="profile__content inner-wrapper"
-    >
-      <ProfileNavigation
-        activeSection="models"
-        changeState={[Function]}
-        sectionsMap={
-          Map {
-            "models" => Object {
-              "getComponent": [Function],
-              "label": "Models",
-            },
-            "charms" => Object {
-              "getComponent": [Function],
-              "label": "Charms",
-            },
-            "bundles" => Object {
-              "getComponent": [Function],
-              "label": "Bundles",
-            },
-            "credentials" => Object {
-              "getComponent": [Function],
-              "label": "Cloud credentials",
-            },
-          }
+    <ProfileNavigation
+      activeSection="models"
+      changeState={[Function]}
+      sectionsMap={
+        Map {
+          "models" => Object {
+            "getComponent": [Function],
+            "label": "Models",
+          },
+          "charms" => Object {
+            "getComponent": [Function],
+            "label": "Charms",
+          },
+          "bundles" => Object {
+            "getComponent": [Function],
+            "label": "Bundles",
+          },
+          "credentials" => Object {
+            "getComponent": [Function],
+            "label": "Cloud credentials",
+          },
         }
-      />
-      <ProfileModelList
-        acl={
-          Object {
-            "isReadOnly": [Function],
-          }
+      }
+    />
+    <ProfileModelList
+      acl={
+        Object {
+          "isReadOnly": [Function],
         }
-        addNotification={[Function]}
-        baseURL="/gui/"
-        changeState={[Function]}
-        destroyModel={[Function]}
-        facadesExist={true}
-        listModelsWithInfo={[Function]}
-        switchModel={[Function]}
-        userInfo={
-          Object {
-            "isCurrent": true,
-            "profile": "spinach",
-          }
+      }
+      addNotification={[Function]}
+      baseURL="/gui/"
+      changeState={[Function]}
+      destroyModel={[Function]}
+      facadesExist={true}
+      listModelsWithInfo={[Function]}
+      switchModel={[Function]}
+      userInfo={
+        Object {
+          "isCurrent": true,
+          "profile": "spinach",
         }
-      />
-    </div>
+      }
+    />
   </div>
 </Panel>
 `;

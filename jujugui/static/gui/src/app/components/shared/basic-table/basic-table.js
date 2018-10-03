@@ -60,18 +60,16 @@ class BasicTable extends React.Component {
       'basic-table',
       this.props.tableClasses);
     return (
-      <div className="v1">
-        <table
-          className={classes}
-          role="grid">
-          <thead>
-            {this._generateRow(true, {columns: this.props.headers})}
-          </thead>
-          <tbody>
-            {this._generateContent()}
-          </tbody>
-        </table>
-      </div>
+      <table
+        className={classes}
+        role="grid">
+        <thead>
+          {this._generateRow(true, {columns: this.props.headers})}
+        </thead>
+        <tbody>
+          {this._generateContent()}
+        </tbody>
+      </table>
     );
   }
 };

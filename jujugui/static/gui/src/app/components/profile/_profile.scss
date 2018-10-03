@@ -1,15 +1,21 @@
 .profile {
 
-  &__title {
-    margin-bottom: 2.2rem;
+  .p-strip--light .row {
+    background-color: transparent;
+
+    .col-3 {
+      margin-left: 0;
+    }
   }
 
-  &__content {
+  .profile__title {
+    margin-bottom: 1.65rem;
+  }
 
-    @media (min-width: $breakpoint-medium) {
-      display: grid;
-      grid-template-columns: 200px 1fr;
-    }
+  .profile__title-count {
+    display: inline-block;
+    color: $color-mid-dark;
+    margin-left: 0.5rem;
   }
 
   .entity__desc {
