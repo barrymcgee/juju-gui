@@ -172,9 +172,10 @@ class ProfileCredentialList extends React.Component {
       <ExpandingRow
         clickable={false}
         expanded={this.state.showAdd}>
-        <React.Fragment>
+        <div></div>
+        <div className="col-12">
           {form}
-        </React.Fragment>
+        </div>
       </ExpandingRow>);
   }
 
